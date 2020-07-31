@@ -1,0 +1,67 @@
+@import '../../styles/sizes';
+@import '../../styles/colors';
+
+.TextInput {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .TextInput-Label {
+    margin-bottom: $base * .5;
+    margin-left: $base;
+    font-size: .95rem;
+    color: $color-text;
+  }
+
+  .TextInput-Border {
+    width: 100%;
+    display: flex;
+    padding: $base / 2;
+    border-radius: $radius;
+    transition: background-color .3s ease;
+    position: relative;
+    overflow: hidden;
+    
+    .TextInput-Input {
+      width: 100%;
+      outline: none;
+      padding: $base;
+      border-radius: inherit;
+      border: none;
+      font-size: .9rem;
+    }
+
+    .TextInput-Error {
+      position: absolute;
+      bottom: 50%;
+      right: -100%;
+      color: $color-danger;
+      background-color: $color-secondary;
+      padding: ($base / 4) $base;
+      font-size: .85rem;
+      transform: translateY(50%);
+      transition: right .3s linear;
+      border-radius: $radius 0 0 $radius;
+    }
+  }
+
+  &.focus {
+
+    .TextInput-Border {
+      background-color: $color-primary;
+    }
+  }
+
+  &.error {
+
+    .TextInput-Border {
+      background-color:  $color-danger;
+
+      .TextInput-Error {
+        right: 4px;
+      }
+      
+    }
+  }
+
+}

@@ -1,0 +1,19 @@
+$color-primary: var(--color-primary);
+$color-primary-dark: var(--color-primary-dark);
+$color-secondary: var(--color-secondary);
+$color-secondary-light: var(--color-secondary-light);
+$color-secondary-dark: var(--color-secondary-dark);
+$color-tertiary: var(--color-tertiary);
+$color-text: var(--color-text);
+$color-header: var(--color-header);
+$color-sub: var(--color-sub);
+$color-orange: var(--color-orange);
+$color-danger: var(--color-danger);
+
+.color-primary {
+  color: $color-primary-dark;
+}
+
+.color-orange {
+  color: $color-orange;
+}

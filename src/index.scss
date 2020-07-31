@@ -1,5 +1,25 @@
 @import '~normalize.scss/normalize.scss';
+@import './styles/colors';
+
+:root {
+  --color-primary: #9C89B8;
+  --color-primary-dark: #724cac;
+  --color-secondary: #EFC3E6;
+  --color-secondary-light: #F0E6EF;
+  --color-secondary-dark: #F0A6CA;
+  --color-tertiary: #B8BEDD;
+  --color-text: #222;
+  --color-header: #222;
+  --color-sub: #555;
+  
+  --color-orange: #ff6600;
+  --color-danger: #e42f2f;
+}
 
 * {
   box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto;
 }
