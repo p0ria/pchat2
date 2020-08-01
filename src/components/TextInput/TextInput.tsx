@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import "./TextInput.scss";
 
 
-export default ({label, error, ...props}: any) => {
+export default forwardRef(({label, error, ...props}: any, ref) => {
   const [focus, setFocus] = useState(false);
+  console.log()
   return (
     <div className={`TextInput ${error ? 'error' : ''} ${focus ? 'focus' : ''}`}>
       <div className="TextInput-Label">
@@ -13,6 +14,7 @@ export default ({label, error, ...props}: any) => {
         <input className="TextInput-Input" type="text"
           onFocus={() => setFocus(true)} 
           onBlur={() => setFocus(false)}
+          ref={ref}
           {...props} />
         <div className="TextInput-Error">
           {error}
@@ -20,4 +22,4 @@ export default ({label, error, ...props}: any) => {
       </div> 
     </div>
   )
-}
+})

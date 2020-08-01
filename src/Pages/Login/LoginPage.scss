@@ -7,7 +7,7 @@
   display: flex;
   flex-flow: row nowrap;
   background-image: url('../../assets/images/login-background.jpg');
-  background-size: cover;
+  background-size: 100vw 100vh;
   background-repeat: no-repeat;
 
   .LoginPage-Left {
@@ -18,7 +18,7 @@
     padding: $base * 2;
     display: flex;
     flex-direction: column;
-    padding: 100px 20px;
+    padding: 180px 20px 50px;
 
     .LoginPage-Left__Welcome {
       font-size: 24px;
@@ -26,8 +26,28 @@
     }
 
     .LoginPage-Left__Inputs {
-      padding: 30px 0;
+      padding: ($base * 5) 0;
       width: 90%;
+
+      .Dialog {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &.EmailAddress-Dialog {
+          .TextInput {
+            width: 100%;
+          }
+    
+          .Button {
+            margin: ($base * 1) 0;
+            width: calc(100% - 8px);
+          }
+        }
+      }
+
+      
     }
   }
 

@@ -5,10 +5,13 @@ $color-secondary-light: var(--color-secondary-light);
 $color-secondary-dark: var(--color-secondary-dark);
 $color-tertiary: var(--color-tertiary);
 $color-text: var(--color-text);
+$color-text-light: var(--color-text-light);
 $color-header: var(--color-header);
 $color-sub: var(--color-sub);
 $color-orange: var(--color-orange);
 $color-danger: var(--color-danger);
+$color-success: var(--color-success);
+$color-warn: var(--color-warn);
 
 .color-primary {
   color: $color-primary-dark;

@@ -1,0 +1,15 @@
+@import '../../styles/sizes';
+@import '../../styles/colors';
+
+.Button {
+  width: 100%;
+  padding: $base ($base * 2);
+  appearance: none;
+  border-radius: $radius;
+  text-align: center;
+  box-shadow: 0 2px 10px -2px $color-primary-dark;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  border: none;
+}
