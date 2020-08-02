@@ -4,6 +4,5 @@
     "activityBar.background": "#881538",
     "titleBar.activeBackground": "#e22e64",
     "titleBar.activeForeground": "#FBF9FC"
-  },
-  "tslint.enable": false
+  }
 }

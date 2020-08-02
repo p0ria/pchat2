@@ -3,7 +3,6 @@ import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
 import LogoText from "../../components/Logo-Text/Logo-Text";
 import Button, { ButtonKind } from "../../components/Button/Button";
-import { PHONE_NUMBER_LENGTH } from "../../commons/constants";
 import { validateEmail } from "../../commons/string-utilities";
 
 export default (props: any) => {
@@ -12,9 +11,9 @@ export default (props: any) => {
   const handleEmailAddressSubmit = () => {
     const emailAddress = emailAddressRef.current?.value;
     if(!emailAddress) {
-      setEmailAddressError('Email Address can not be empty');
+      setEmailAddressError('Email can not be empty');
     } else if(!validateEmail(emailAddress)) {
-      setEmailAddressError('Email Address is invalid');
+      setEmailAddressError('Email is invalid');
     } else {
       alert('Email Address is correct');
     }
