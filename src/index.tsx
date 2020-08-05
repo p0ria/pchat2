@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import ThemeContextProvider from './contexts/ThemeContext';
+import ThemeProvider from './contexts/ThemeContext';
+import StoreProvider from './contexts/StoreContext';
+require('dotenv').config()
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeContextProvider>
-      <App />
-    </ThemeContextProvider>
+    <ThemeProvider>
+      <StoreProvider>
+        <App />
+      </StoreProvider>  
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

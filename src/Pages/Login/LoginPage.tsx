@@ -1,11 +1,15 @@
-import React, { useState, useRef, createRef } from "react";
+import React, { useState, createRef, useContext } from "react";
 import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
 import LogoText from "../../components/Logo-Text/Logo-Text";
 import Button, { ButtonKind } from "../../components/Button/Button";
 import { validateEmail } from "../../commons/string-utilities";
+import { StoreContext } from "../../contexts/StoreContext";
+import { LoginGenerateCodeAction } from "../../state/login/login.action";
+import { EnvService } from "../../services/env.service";
 
 export default (props: any) => {
+  const [store, dispatch] = useContext(StoreContext);
   const [emailAddressError, setEmailAddressError] = useState<string | null>();
   const emailAddressRef = createRef<HTMLInputElement>();
   const handleEmailAddressSubmit = () => {
@@ -15,7 +19,7 @@ export default (props: any) => {
     } else if(!validateEmail(emailAddress)) {
       setEmailAddressError('Email is invalid');
     } else {
-      alert('Email Address is correct');
+      dispatch(new LoginGenerateCodeAction(emailAddress));
     }
   }
   const handleEnter = (e: KeyboardEvent) => {
@@ -41,7 +45,7 @@ export default (props: any) => {
               onClick={handleEmailAddressSubmit}>Submit</Button>  
           </div>
           <div className="Dialog VerificationCode-Dialog">
-
+            
           </div>
         </div>
       </div>

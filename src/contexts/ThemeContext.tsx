@@ -44,7 +44,7 @@ export const ThemeContext = createContext<[IThemeContext, (theme: IThemeContext)
   [initialThemeContext, f => {}]
 );
 
-export default function ThemeContextProvider(props: any) {
+export default function ThemeProvider(props: any) {
   const [theme, setTheme] = useState(initialThemeContext)
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>
