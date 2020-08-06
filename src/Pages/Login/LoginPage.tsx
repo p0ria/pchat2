@@ -1,15 +1,17 @@
-import React, { useState, createRef, useContext } from "react";
+import React, { useState, createRef } from "react";
 import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
 import LogoText from "../../components/Logo-Text/Logo-Text";
 import Button, { ButtonKind } from "../../components/Button/Button";
 import { validateEmail } from "../../commons/string-utilities";
-import { StoreContext } from "../../contexts/StoreContext";
-import { LoginGenerateCodeAction } from "../../state/login/login.action";
-import { EnvService } from "../../services/env.service";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUiState } from "../../state/login/login.selectors";
+import { loginGenerateCode } from "../../state/login/login.action";
+import { LoginUiState } from "../../state/login/login.state";
 
-export default (props: any) => {
-  const [store, dispatch] = useContext(StoreContext);
+export default () => {
+  const uiState:LoginUiState = useSelector(selectUiState);
+  const dispatch = useDispatch();
   const [emailAddressError, setEmailAddressError] = useState<string | null>();
   const emailAddressRef = createRef<HTMLInputElement>();
   const handleEmailAddressSubmit = () => {
@@ -19,7 +21,7 @@ export default (props: any) => {
     } else if(!validateEmail(emailAddress)) {
       setEmailAddressError('Email is invalid');
     } else {
-      dispatch(new LoginGenerateCodeAction(emailAddress));
+      dispatch(loginGenerateCode(emailAddress));
     }
   }
   const handleEnter = (e: KeyboardEvent) => {
@@ -45,7 +47,7 @@ export default (props: any) => {
               onClick={handleEmailAddressSubmit}>Submit</Button>  
           </div>
           <div className="Dialog VerificationCode-Dialog">
-            
+            {uiState}
           </div>
         </div>
       </div>

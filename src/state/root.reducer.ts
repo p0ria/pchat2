@@ -1,7 +1,8 @@
-import { Store } from './store';
-import { combineReducers } from "../commons/store-utilities";
 import { loginReducer } from './login/login.reducer';
+import {combineReducers} from 'redux';
 
-export const rootReducer = combineReducers<Store>({
+const rootReducer = combineReducers({
   login: loginReducer
 });
+
+export default rootReducer;

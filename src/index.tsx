@@ -1,19 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import ThemeProvider from './contexts/ThemeContext';
-import StoreProvider from './contexts/StoreContext';
-require('dotenv').config()
+import * as dotenv from 'dotenv';
+import store from './state/store';
 
+dotenv.config();
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <StoreProvider>
-        <App />
-      </StoreProvider>  
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <App /> 
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

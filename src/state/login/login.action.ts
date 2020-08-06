@@ -1,5 +1,3 @@
-import { Action } from '../../interfaces/store.interface';
-
 export const LoginActionTypes = {
   GenerateCode : '[LOGIN] Generate Code',
   GenerateCodeSuccess : '[LOGIN] Generate Code Success',
@@ -9,30 +7,30 @@ export const LoginActionTypes = {
   VerifyCodeFail: '[LOGIN] Verify Code Fail'
 }
 
-export class LoginGenerateCodeAction implements Action {
-  type = LoginActionTypes.GenerateCode;
-  constructor(public payload: string) {}
-}
+export const loginGenerateCode = (email: string) => ({
+  type: LoginActionTypes.GenerateCode,
+  payload: email
+});
 
-export class LoginGenerateCodeSuccessAction implements Action {
-  type = LoginActionTypes.GenerateCodeSuccess;
-}
+export const loginGenerateCodeSuccess = () => ({
+  type: LoginActionTypes.GenerateCodeSuccess
+});
 
-export class LoginGenerateCodeFailAction implements Action {
-  type = LoginActionTypes.GenerateCodeFail;
-  constructor(public payload: string) {}
-}
+export const loginGenerateCodeFail = (error: string) => ({
+  type: LoginActionTypes.GenerateCodeFail,
+  payload: error
+});
 
-export class LoginVerifyCodeAction implements Action {
-  type = LoginActionTypes.VerifyCode;
-  constructor(public payload: string) {}
-}
+export const loginVerifyCode = (code: string) => ({
+  type: LoginActionTypes.VerifyCode,
+  payload: code 
+});
 
-export class LoginVerifyCodeSuccessAction implements Action {
-  type = LoginActionTypes.GenerateCodeSuccess;
-}
+export const loginVerifyCodeSuccess = () => ({
+  type: LoginActionTypes.VerifyCodeSuccess,
+});
 
-export class LoginVerifyCodeFailAction implements Action {
-  type = LoginActionTypes.VerifyCodeFail;
-  constructor(public pauload: string) {}
-}
+export const loginVerifyCodeFail = (error: string) => ({
+  type: LoginActionTypes.VerifyCodeFail,
+  payload: error
+});
