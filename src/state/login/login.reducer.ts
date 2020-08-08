@@ -1,5 +1,5 @@
 import { Action } from "../../interfaces/store.interface";
-import LoginState, {initialLoginState, LoginUiState } from "./login.state";
+import LoginState, {initialLoginState } from "./login.state";
 import { LoginActionTypes } from "./login.action";
 
 export const loginReducer = (state: LoginState = initialLoginState, action: Action): LoginState => {

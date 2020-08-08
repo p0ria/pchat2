@@ -6,28 +6,30 @@ import Button, { ButtonKind } from "../../components/Button/Button";
 import { validateEmail } from "../../commons/string-utilities";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUiState } from "../../state/login/login.selectors";
-import { loginGenerateCode } from "../../state/login/login.action";
 import { LoginUiState } from "../../state/login/login.state";
+import call, { Api } from "../../services/api";
 
 export default () => {
   const uiState:LoginUiState = useSelector(selectUiState);
   const dispatch = useDispatch();
-  const [emailAddressError, setEmailAddressError] = useState<string | null>();
-  const emailAddressRef = createRef<HTMLInputElement>();
-  const handleEmailAddressSubmit = () => {
-    const emailAddress = emailAddressRef.current?.value;
-    if(!emailAddress) {
+  const [emailError, setEmailAddressError] = useState<string | null>();
+  const emailRef = createRef<HTMLInputElement>();
+  const handleEmailSubmit = async () => {
+    const email = emailRef.current?.value;
+    if(!email) {
       setEmailAddressError('Email can not be empty');
-    } else if(!validateEmail(emailAddress)) {
+    } else if(!validateEmail(email)) {
       setEmailAddressError('Email is invalid');
     } else {
-      dispatch(loginGenerateCode(emailAddress));
+      // dispatch(loginGenerateCode(emailAddress));
+      let r = await call(Api.getVerificationCode, {url: `${email}`});
+      console.log(r);
     }
   }
   const handleEnter = (e: KeyboardEvent) => {
     const ENTER = 13;
     if(e.which === ENTER) {
-      handleEmailAddressSubmit();
+      handleEmailSubmit();
     }
   }
   return (
@@ -40,11 +42,11 @@ export default () => {
           <div className="Dialog EmailAddress-Dialog active">
             <TextInput label="Please enter your email address" 
               placeholder="email@address.com" 
-              error={emailAddressError}
+              error={emailError}
               onKeyDown={handleEnter}
-              ref={emailAddressRef} onChange={(_: any) => setEmailAddressError(null)} />
+              ref={emailRef} onChange={(_: any) => setEmailAddressError(null)} />
             <Button kind={ButtonKind.Success}
-              onClick={handleEmailAddressSubmit}>Submit</Button>  
+              onClick={handleEmailSubmit}>Submit</Button>  
           </div>
           <div className="Dialog VerificationCode-Dialog">
             {uiState}
