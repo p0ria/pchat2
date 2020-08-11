@@ -12,3 +12,8 @@ export const selectUiState = createSelector(
   selectLoginState,
   state => state.uiState
 );
+
+export const selectLoginError = createSelector(
+  selectLoginState,
+  state => state.error
+);

@@ -1,11 +1,12 @@
 import { Url } from "./url";
 import axios, { Method, AxiosPromise } from "axios";
 
-export const Api: { [key: string]: { action: string; method: Method } } = {
+export const Apis: { [key: string]: { action: string; method: Method } } = {
   getVerificationCode: { action: "code", method: "get" },
+  verifyCode: {action: "code", method: "post"}
 };
 
-const call = (
+const api = (
   api: { action: string; method: Method },
   config: { data?: any; url?: string, params?: any } = {}
 ): AxiosPromise<any> => {
@@ -19,4 +20,4 @@ const call = (
   });
 };
 
-export default call;
+export default api;

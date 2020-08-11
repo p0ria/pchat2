@@ -2,7 +2,51 @@
   "workbench.colorTheme": "One Dark Pro",
   "workbench.colorCustomizations": {
     "activityBar.background": "#881538",
-    "titleBar.activeBackground": "#e22e64",
-    "titleBar.activeForeground": "#FBF9FC"
+    "titleBar.activeBackground": "#5c0e26",
+    "titleBar.activeForeground": "#e7e7e7",
+    "activityBar.activeBackground": "#881538",
+    "activityBar.activeBorder": "#398a15",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#398a15",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#5c0e26",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#881538",
+    "titleBar.inactiveBackground": "#5c0e2699",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#5c0e26",
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          //following will be in italic (=FlottFlott)
+          "comment",
+          "entity.name.type.class", //class names
+          "keyword", //import, export, return…
+          "constant", //String, Number, Boolean…, this, super
+          "storage.modifier", //static keyword
+          "storage.type.class.js", //class keyword
+        ],
+        "settings": {
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "scope": [
+          //following will be excluded from italics (VSCode has some defaults for italics)
+          "invalid",
+          "keyword.operator",
+          "constant.numeric.css",
+          "keyword.other.unit.px.css",
+          "constant.numeric.decimal.js",
+          "constant.numeric.json"
+        ],
+        "settings": {
+          "fontStyle": ""
+        }
+      }
+    ]
   }
 }
