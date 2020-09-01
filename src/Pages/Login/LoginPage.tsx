@@ -9,6 +9,7 @@ import { selectUiState, selectLoginError, selectEmailAddress } from "../../state
 import { LoginUiState } from "../../state/login/login.state";
 import { loginGetVerificationCode, loginVerifyCode } from "../../state/login/login.actions";
 import Spinner from "react-spinner";
+import CheckMark from "../../components/CheckMark/CheckMark";
 
 export default () => {
   const loginEmail = useSelector(selectEmailAddress) as string;
@@ -109,7 +110,7 @@ export default () => {
         </div>
       </div>
       <div className="LoginPage-Right">
-
+        <CheckMark />
       </div>
     </div>
   )
