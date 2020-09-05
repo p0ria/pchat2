@@ -10,6 +10,23 @@ import { LoginUiState } from "../../state/login/login.state";
 import { loginGetVerificationCode, loginVerifyCode } from "../../state/login/login.actions";
 import Spinner from "react-spinner";
 import CheckMark from "../../components/CheckMark/CheckMark";
+import { motion, AnimatePresence } from "framer-motion";
+
+const dialogVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: .5 }
+  },
+  exit: {
+    opacity: 0,
+    x: '-100vw',
+    transition: { ease: 'easeInOut', duration: .5 }
+  }
+}
 
 export default () => {
   const loginEmail = useSelector(selectEmailAddress) as string;
@@ -56,6 +73,8 @@ export default () => {
         return rendererGenerate();
       case "verify":
         return renderVerify();
+      case "verified":
+        return renderVerified();
       case "generating":
       case "verifying":
         return renderSpinner();
@@ -63,7 +82,12 @@ export default () => {
   };
 
   const rendererGenerate = () => (
-    <div className="Dialog EmailAddress-Dialog active">
+    <motion.div key="0" className="Dialog EmailAddress-Dialog"
+      variants={dialogVariants}
+      initial="false"
+      animate="visible"
+      exit="exit"
+    >
       <TextInput label="Please enter your email address"
         placeholder="email@address.com"
         error={error}
@@ -72,12 +96,17 @@ export default () => {
         onChange={(_: any) => setError(null)} />
       <Button kind={ButtonKind.Success}
         onClick={handleEmailSubmit}>Submit</Button>
-    </div>
+    </motion.div>
   );
 
   const renderVerify = () => (
-    <div className="Dialog VerificationCode-Dialog">
-      <TextInput label="Please enter the verification code sent to your email"
+    <motion.div key="1" className="Dialog VerificationCode-Dialog"
+      variants={dialogVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <TextInput label={`Please enter the verification code sent to ${loginEmail}`}
         placeholder="(Verification code)"
         error={error}
         onKeyDown={handleEnter}
@@ -85,11 +114,25 @@ export default () => {
         onChange={(_: any) => setError(null)} />
       <Button kind={ButtonKind.Success}
         onClick={handleCodeSubmit}>Submit</Button>
+    </motion.div>
+  );
+
+  const renderVerified = () => (
+    <div className="Dialog Verified-Dialog"
+    >
+      <CheckMark />
     </div>
   );
 
   const renderSpinner = () => (
-    <Spinner />
+    <motion.div className="Login-Spinner"
+      variants={dialogVariants}
+      initial={false}
+      animate="visible"
+      exit="exit"
+    >
+      <Spinner />
+    </motion.div>
   );
 
   const renderError = () => (
@@ -105,12 +148,13 @@ export default () => {
           Welcome to <LogoText fontSize={24} /> Application
         </div>
         <div className="LoginPage-Left__Inputs">
-          {renderSwitch()}
+          <AnimatePresence exitBeforeEnter>
+            {renderSwitch()}
+          </AnimatePresence>
           {renderError()}
         </div>
       </div>
       <div className="LoginPage-Right">
-        <CheckMark />
       </div>
     </div>
   )

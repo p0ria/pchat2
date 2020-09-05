@@ -1,21 +1,32 @@
 import React, { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useTransform, useMotionValue } from 'framer-motion';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
 const checkVariants = {
   hidden: {
-    scale: .85, 
+    scale: 0, 
     pathLength: 0
   },
   visible: {
     scale: 1,
     pathLength: 1,
-    transition: { duration: 1, delay: 1 }
+    rotateZ: 20,
+    transition: { 
+      duration: 1, 
+      delay: 1, 
+      rotateZ: {
+        yoyo: 9,
+        delay: 2,
+        duration: .2
+      }},
   }
 }
 
 export default ({...props}) => {
   const [theme] = useContext(ThemeContext);
+  const pathLength = useMotionValue(0);
+  const opacity = useTransform(pathLength, [0.05, 0.15], [0, 1]);
+
   return (
     <motion.svg
       width="210"
@@ -30,8 +41,9 @@ export default ({...props}) => {
         stroke={theme.colors.success}
         strokeLinecap="round"
         strokeLinejoin="round"
-        style={{pathLength: 1}}
+        style={{pathLength, opacity}}
         variants={checkVariants}
+        origin="0"
       >
       </motion.path>
     </motion.svg>

@@ -16,7 +16,7 @@ export const loginGetVerificationCodeSuccess = () => ({
   type: LoginActionTypes.GetVerificationCodeSuccess
 });
 
-export const loginGetVerificationCodeFail = (error: string) => ({
+export const loginGetVerificationCodeFail = (error: string = "") => ({
   type: LoginActionTypes.GetVerificationCodeFail,
   payload: error
 });
