@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
 import LogoText from "../../components/Logo-Text/Logo-Text";
@@ -11,6 +11,8 @@ import { loginGetVerificationCode, loginVerifyCode } from "../../state/login/log
 import Spinner from "react-spinner";
 import CheckMark from "../../components/CheckMark/CheckMark";
 import { motion, AnimatePresence } from "framer-motion";
+import { useHistory } from "react-router-dom";
+import GoogleBtn from "../../components/GoogleBtn/GoogleBtn";
 
 const dialogVariants = {
   hidden: {
@@ -36,6 +38,12 @@ export default () => {
   const [error, setError] = useState<string | null>();
   const emailRef = createRef<HTMLInputElement>();
   const codeRef = createRef<HTMLInputElement>();
+  const history = useHistory();
+  useEffect(() => {
+    if(uiState === 'verified') {
+      setTimeout(() => history.push("/"), 5000);
+    }
+  }, [uiState])
 
   const handleEmailSubmit = async () => {
     const email = emailRef.current?.value;
@@ -96,8 +104,18 @@ export default () => {
         onChange={(_: any) => setError(null)} />
       <Button kind={ButtonKind.Success}
         onClick={handleEmailSubmit}>Submit</Button>
+      {renderOAuth()}
     </motion.div>
   );
+
+  const renderOAuth = () => {
+    return (
+      <div className="Login-OAuth">
+        <div className="Login-OAuth__Or">or</div>
+        <GoogleBtn />
+      </div>
+    )
+  }
 
   const renderVerify = () => (
     <motion.div key="1" className="Dialog VerificationCode-Dialog"
@@ -118,8 +136,7 @@ export default () => {
   );
 
   const renderVerified = () => (
-    <div className="Dialog Verified-Dialog"
-    >
+    <div className="Dialog Verified-Dialog">
       <CheckMark />
     </div>
   );
