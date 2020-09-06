@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import GoogleLogin, { GoogleLogout } from 'react-google-login';
+import { useDispatch } from 'react-redux';
+import { loginGoogle } from '../../state/login/login.actions';
 
 export default({...props}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
+  const dispatch = useDispatch();
   const onLogout = response => {
     setIsLoggedIn(false);
     setAccessToken(null);
   }
-  const onLogin = response => {
-    if(response.accessToken) {
+  const onLogin = ({tokenId}) => {
+    if(tokenId) {
       setIsLoggedIn(true);
-      setAccessToken(response.accessToken);
+      dispatch(loginGoogle(tokenId));
     }
   }
   const handleLogoutFailure = response => {
@@ -36,9 +39,9 @@ export default({...props}) => {
           onFailure={handleLoginFailure}
           cookiePolicy={"single_host_origin"}
           responseType="code,token"
+          isSignedIn={true} 
         />
       }
-      {accessToken ? <h5>You access token: <br/><br/> {accessToken}</h5> : null}
     </div>
   )
 }

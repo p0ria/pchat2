@@ -44,6 +44,12 @@ export const loginReducer = (
         uiState: "verify",
         error: action.payload,
       };
+    case LoginActionTypes.LoginByGoogle:
+      return {
+        ...state,
+        uiState: "verifying",
+        error: null
+      };
     default:
       return state;
   }

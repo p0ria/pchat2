@@ -9,6 +9,7 @@ import {
   loginGetVerificationCodeFail,
   loginVerifyCodeFail,
   loginVerifyCodeSuccess,
+  loginFail,
 } from "./login.actions";
 
 export function* getVerificationCode(action: Action) {
@@ -38,7 +39,17 @@ export function* verifyCode(action: Action) {
   }
 }
 
+export function* loginGoogle(action: Action) {
+  try {
+    const token = yield call(api, Apis.loginByGoogle, {data: {tokenId: action.payload}});
+    console.log("TOKEN: ", token);
+  } catch (error) {
+    yield put(loginFail(error));
+  }
+}
+
 export function* loginSaga() {
   yield takeEvery(LoginActionTypes.GetVerificationCode, getVerificationCode);
   yield takeEvery(LoginActionTypes.VerifyCode, verifyCode);
+  yield takeEvery(LoginActionTypes.LoginByGoogle, loginGoogle);
 }
