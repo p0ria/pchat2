@@ -1,7 +1,8 @@
 @import '../../styles/sizes';
 @import '../../styles/responsive';
 @import '../../styles/colors';
-
+$or_start_color: rgba(255, 255, 255, .2);
+$or_end_color: rgba(255, 255, 255, .3);
 .LoginPage {
   width: 100%;
   height: 100%;
@@ -47,6 +48,10 @@
         }
       }
 
+      .Login-Spinner {
+        margin-top: 40px;
+      }
+
       .Login-Error {
         align-self: flex-start;
         padding-left: 5px;
@@ -65,6 +70,35 @@
 
         &.error {
           transform: translateX(0);
+        }
+      }
+
+      .Login-OAuth {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .Login-OAuth__Or {
+          color: $color-text-light;
+          margin-bottom: 20px;
+          position: relative;
+
+          &::after, &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 130px;
+            height: 2px;         
+          }
+          &::after {
+            left: calc(100% + 10px);
+            background: linear-gradient(90deg, $or_start_color, $or_end_color);
+          }
+          &::before {
+            right: calc(100% + 10px);
+            background: linear-gradient(90deg, $or_end_color, $or_start_color);
+          }
         }
       }
     }

@@ -1,9 +1,17 @@
-import { Url } from "./url";
 import axios, { Method, AxiosPromise } from "axios";
+import { Env } from "./env";
+
+export const Url: {[action: string]: string} = {
+  code: `${Env.apiUrl}/code`,
+  loginByGoogle: `${Env.apiUrl}/login/google`,
+  loginByEmail: `${Env.apiUrl}/login/email`
+};
 
 export const Apis: { [key: string]: { action: string; method: Method } } = {
   getVerificationCode: { action: "code", method: "get" },
-  verifyCode: {action: "code", method: "post"}
+  verifyCode: {action: "code", method: "post"},
+  loginByGoogle: { action: "loginByGoogle", method: "post"},
+  loginByEmail: { action: "loginByEmail", method: "post"}
 };
 
 const api = (

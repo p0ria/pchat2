@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
 import LogoText from "../../components/Logo-Text/Logo-Text";
@@ -7,8 +7,28 @@ import { validateEmail } from "../../commons/string-utilities";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUiState, selectLoginError, selectEmailAddress } from "../../state/login/login.selectors";
 import { LoginUiState } from "../../state/login/login.state";
-import { loginGetVerificationCode, loginVerifyCode } from "../../state/login/login.actions";
+import { loginVerifyCode, loginByEmail } from "../../state/login/login.actions";
 import Spinner from "react-spinner";
+import CheckMark from "../../components/CheckMark/CheckMark";
+import { motion, AnimatePresence } from "framer-motion";
+import { useHistory } from "react-router-dom";
+import GoogleBtn from "../../components/GoogleBtn/GoogleBtn";
+
+const dialogVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: .5 }
+  },
+  exit: {
+    opacity: 0,
+    x: '-100vw',
+    transition: { ease: 'easeInOut', duration: .5 }
+  }
+}
 
 export default () => {
   const loginEmail = useSelector(selectEmailAddress) as string;
@@ -18,6 +38,12 @@ export default () => {
   const [error, setError] = useState<string | null>();
   const emailRef = createRef<HTMLInputElement>();
   const codeRef = createRef<HTMLInputElement>();
+  const history = useHistory();
+  useEffect(() => {
+    if(uiState === 'verified') {
+      setTimeout(() => history.push("/"), 5000);
+    }
+  }, [uiState])
 
   const handleEmailSubmit = async () => {
     const email = emailRef.current?.value;
@@ -26,7 +52,7 @@ export default () => {
     } else if (!validateEmail(email)) {
       setError('Email is invalid');
     } else {
-      dispatch(loginGetVerificationCode(email));
+      dispatch(loginByEmail(email));
     }
   };
 
@@ -55,14 +81,20 @@ export default () => {
         return rendererGenerate();
       case "verify":
         return renderVerify();
-      case "generating":
-      case "verifying":
+      case "verified":
+        return renderVerified();
+      case "loading":
         return renderSpinner();
     }
   };
 
   const rendererGenerate = () => (
-    <div className="Dialog EmailAddress-Dialog active">
+    <motion.div key="0" className="Dialog EmailAddress-Dialog"
+      variants={dialogVariants}
+      initial="false"
+      animate="visible"
+      exit="exit"
+    >
       <TextInput label="Please enter your email address"
         placeholder="email@address.com"
         error={error}
@@ -71,12 +103,27 @@ export default () => {
         onChange={(_: any) => setError(null)} />
       <Button kind={ButtonKind.Success}
         onClick={handleEmailSubmit}>Submit</Button>
-    </div>
+      {renderOAuth()}
+    </motion.div>
   );
 
+  const renderOAuth = () => {
+    return (
+      <div className="Login-OAuth">
+        <div className="Login-OAuth__Or">or</div>
+        <GoogleBtn />
+      </div>
+    )
+  }
+
   const renderVerify = () => (
-    <div className="Dialog VerificationCode-Dialog">
-      <TextInput label="Please enter the verification code sent to your email"
+    <motion.div key="1" className="Dialog VerificationCode-Dialog"
+      variants={dialogVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <TextInput label={`Please enter the verification code sent to ${loginEmail}`}
         placeholder="(Verification code)"
         error={error}
         onKeyDown={handleEnter}
@@ -84,11 +131,24 @@ export default () => {
         onChange={(_: any) => setError(null)} />
       <Button kind={ButtonKind.Success}
         onClick={handleCodeSubmit}>Submit</Button>
+    </motion.div>
+  );
+
+  const renderVerified = () => (
+    <div className="Dialog Verified-Dialog">
+      <CheckMark />
     </div>
   );
 
   const renderSpinner = () => (
-    <Spinner />
+    <motion.div className="Login-Spinner"
+      variants={dialogVariants}
+      initial={false}
+      animate="visible"
+      exit="exit"
+    >
+      <Spinner />
+    </motion.div>
   );
 
   const renderError = () => (
@@ -104,12 +164,13 @@ export default () => {
           Welcome to <LogoText fontSize={24} /> Application
         </div>
         <div className="LoginPage-Left__Inputs">
-          {renderSwitch()}
+          <AnimatePresence exitBeforeEnter>
+            {renderSwitch()}
+          </AnimatePresence>
           {renderError()}
         </div>
       </div>
       <div className="LoginPage-Right">
-
       </div>
     </div>
   )
