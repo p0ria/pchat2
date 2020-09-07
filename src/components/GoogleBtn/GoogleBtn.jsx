@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import GoogleLogin, { GoogleLogout } from 'react-google-login';
 import { useDispatch } from 'react-redux';
-import { loginGoogle } from '../../state/login/login.actions';
+import { loginByGoogle } from '../../state/login/login.actions';
 
 export default({...props}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,7 +14,7 @@ export default({...props}) => {
   const onLogin = ({tokenId}) => {
     if(tokenId) {
       setIsLoggedIn(true);
-      dispatch(loginGoogle(tokenId));
+      dispatch(loginByGoogle(tokenId));
     }
   }
   const handleLogoutFailure = response => {
@@ -39,7 +39,7 @@ export default({...props}) => {
           onFailure={handleLoginFailure}
           cookiePolicy={"single_host_origin"}
           responseType="code,token"
-          isSignedIn={true} 
+          isSignedIn={false} 
         />
       }
     </div>

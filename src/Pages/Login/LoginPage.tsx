@@ -7,7 +7,7 @@ import { validateEmail } from "../../commons/string-utilities";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUiState, selectLoginError, selectEmailAddress } from "../../state/login/login.selectors";
 import { LoginUiState } from "../../state/login/login.state";
-import { loginGetVerificationCode, loginVerifyCode } from "../../state/login/login.actions";
+import { loginVerifyCode, loginByEmail } from "../../state/login/login.actions";
 import Spinner from "react-spinner";
 import CheckMark from "../../components/CheckMark/CheckMark";
 import { motion, AnimatePresence } from "framer-motion";
@@ -52,7 +52,7 @@ export default () => {
     } else if (!validateEmail(email)) {
       setError('Email is invalid');
     } else {
-      dispatch(loginGetVerificationCode(email));
+      dispatch(loginByEmail(email));
     }
   };
 
@@ -83,8 +83,7 @@ export default () => {
         return renderVerify();
       case "verified":
         return renderVerified();
-      case "generating":
-      case "verifying":
+      case "loading":
         return renderSpinner();
     }
   };

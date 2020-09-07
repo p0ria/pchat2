@@ -10,8 +10,7 @@ export const loginReducer = (
     case LoginActionTypes.GetVerificationCode:
       return {
         ...state,
-        emailAddress: action.payload,
-        uiState: "generating",
+        uiState: "loading",
         error: null,
       };
     case LoginActionTypes.GetVerificationCodeSuccess:
@@ -29,7 +28,7 @@ export const loginReducer = (
     case LoginActionTypes.VerifyCode:
       return {
         ...state,
-        uiState: "verifying",
+        uiState: "loading",
         error: null,
       };
     case LoginActionTypes.VerifyCodeSuccess:
@@ -45,11 +44,19 @@ export const loginReducer = (
         error: action.payload,
       };
     case LoginActionTypes.LoginByGoogle:
+    case LoginActionTypes.LoginByEmail:
       return {
         ...state,
-        uiState: "verifying",
+        uiState: "loading",
         error: null
       };
+    case LoginActionTypes.LoginSuccess:
+      return {
+        ...state,
+        emailAddress: action.payload.email,
+        token: action.payload.token,
+        error: null
+      }
     default:
       return state;
   }
