@@ -11,7 +11,9 @@ export default forwardRef(({label, error, ...props}: any, ref) => {
         {label}:
       </div>
       <div className="TextInput-Border">
-        <input className="TextInput-Input" type="text"
+        <input className="TextInput-Input" 
+          type="text"
+          spellCheck="false"
           onFocus={() => setFocus(true)} 
           onBlur={() => setFocus(false)}
           ref={ref}

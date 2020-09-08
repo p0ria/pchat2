@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, createRef, useEffect, useReducer, useContext } from "react";
 import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
 import LogoText from "../../components/Logo-Text/Logo-Text";
@@ -13,6 +13,7 @@ import CheckMark from "../../components/CheckMark/CheckMark";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHistory } from "react-router-dom";
 import GoogleBtn from "../../components/GoogleBtn/GoogleBtn";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const dialogVariants = {
   hidden: {
@@ -29,7 +30,58 @@ const dialogVariants = {
     transition: { ease: 'easeInOut', duration: .5 }
   }
 }
-
+const timerVariants = {
+  visible: {
+    x: 0,
+    y: 0,
+    scale: 1,
+    opacity: 1
+  },
+  heartbit: {
+    x: 0,
+    y: 0,
+    scale: 1.2,
+    opacity: 1,
+    fontWeight: 900,
+    transition: {
+      yoyo: Infinity
+    }
+  },
+  exit: {
+    x: [-5, 5, -4, 4, -3, 3, -2, 2, -1, 1, 0],
+    y: -100,
+    opacity: 0,
+    scale: 1,
+    fontWeight: 500,
+    transition: {
+      duration: 1
+    }
+  }
+}
+const redoVariants = {
+  hidden: {
+    scale: 2,
+    textShadow: "0 2px 4px rgba(0, 0, 0, .3)"
+  },
+  visible: {
+    scale: 1,
+    textShadow: "0 1 4px rgba(0, 0, 0, .1)"
+  },
+  hover: {
+    scale: 1.2,
+    rotate: -20,
+    transition: { type: 'spring', stiffness: 300, damping: 5 }
+  },
+  exit: {
+    rotate: [0, 1000],
+    opacity: 0,
+    transition: {
+      duration: 5
+    }
+  }
+}
+const TIMER_DANGER_THRESHOLD = 30;
+let verificationInterval: any;
 export default () => {
   const loginEmail = useSelector(selectEmailAddress) as string;
   const uiState: LoginUiState = useSelector(selectUiState);
@@ -39,11 +91,22 @@ export default () => {
   const emailRef = createRef<HTMLInputElement>();
   const codeRef = createRef<HTMLInputElement>();
   const history = useHistory();
+  const [verificationTimer, setVerificationTimer] = useState(1);
+  const [redo, setRedo] = useState(false);
   useEffect(() => {
-    if(uiState === 'verified') {
+    if (uiState === 'verified') {
       setTimeout(() => history.push("/"), 5000);
     }
+    if (uiState === 'verify') {
+      if (verificationInterval) clearInterval(verificationInterval);
+      verificationInterval = setInterval(() => {
+        setVerificationTimer(a => a - 1);
+      }, 1000)
+    }
   }, [uiState])
+  useEffect(() => {
+    !verificationTimer && verificationInterval && clearInterval(verificationInterval);
+  }, [verificationTimer]);
 
   const handleEmailSubmit = async () => {
     const email = emailRef.current?.value;
@@ -74,6 +137,11 @@ export default () => {
         handleCodeSubmit();
     }
   };
+
+  const resetTimer = () => {
+    setRedo(true);
+    setVerificationTimer(40);
+  }
 
   const renderSwitch = () => {
     switch (uiState) {
@@ -123,12 +191,37 @@ export default () => {
       animate="visible"
       exit="exit"
     >
-      <TextInput label={`Please enter the verification code sent to ${loginEmail}`}
-        placeholder="(Verification code)"
-        error={error}
-        onKeyDown={handleEnter}
-        ref={codeRef}
-        onChange={(_: any) => setError(null)} />
+      <div className="VerificationCode-Input">
+        <TextInput label={`Please enter the verification code sent to ${loginEmail}`}
+          placeholder="(Verification code)"
+          error={error}
+          onKeyDown={handleEnter}
+          ref={codeRef}
+          onChange={(_: any) => setError(null)} />
+        <AnimatePresence exitBeforeEnter>
+          {verificationTimer ?
+            <motion.label className={`${verificationTimer < TIMER_DANGER_THRESHOLD ? 'danger' : ''}`}
+              key={1}
+              variants={timerVariants}
+              initial={redo ? 'exit' : false}
+              animate={verificationTimer < TIMER_DANGER_THRESHOLD ? 'heartbit' : 'visible'}
+              exit="exit"
+            >{verificationTimer}
+            </motion.label> :
+            <motion.label className="redo"
+              key={2}
+              variants={redoVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover='hover'
+              exit="exit"
+              onClick={() => resetTimer()}
+            >
+              <i className="fa fa-undo"></i>
+            </motion.label>
+          }
+        </AnimatePresence>
+      </div>
       <Button kind={ButtonKind.Success}
         onClick={handleCodeSubmit}>Submit</Button>
     </motion.div>
