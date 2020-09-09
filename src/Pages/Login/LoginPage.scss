@@ -133,6 +133,13 @@ $or_end_color: rgba(255, 255, 255, .3);
   .LoginPage-Right {
     flex: 1;
     height: 100%;
+    position: relative;
+
+    #heart {
+      position: absolute;
+      bottom: 29%;
+      right: 34%;
+    }
   }
 
   @include desktop {

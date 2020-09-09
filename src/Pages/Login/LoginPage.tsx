@@ -94,7 +94,20 @@ const redoVariants = {
     }
   }
 }
-const VERIFICATION_TIME = 10;
+const heartVariants = {
+  rest: {
+    opacity: [.4, 0],
+    x: [-5, 5],
+    y: [0, -50],
+    transition: {
+      delay: 5,
+      duration: 2,
+      repeat: Infinity,
+      repeatDelay: 10
+    }
+  }
+}
+const VERIFICATION_TIME = 99;
 const TIMER_DANGER_THRESHOLD = 30;
 let verificationInterval: any;
 export default () => {
@@ -311,6 +324,15 @@ export default () => {
         </div>
       </div>
       <div className="LoginPage-Right">
+        <motion.svg id="heart"
+          variants={heartVariants}
+          initial={false}
+          animate="rest"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="383.28261964559726 213.13837531406716 36 27.039999999999992"
+          width="32" height="23.04" fill="red">
+          <path d="M386.09 217.08C385.57 217.6 384.86 218.7 384.63 219.32C384.28 220.3 384.19 221.3 384.39 221.93C384.83 223.26 386.2 224.96 388.6 227.15C390.12 228.52 390.79 229.07 394.78 232.25C398.67 235.35 399.64 236.2 400.1 236.87C400.11 236.89 400.18 236.99 400.31 237.18C400.38 237.04 400.42 236.97 400.43 236.95C400.7 236.49 401.57 235.79 405.66 232.7C411.16 228.54 412.46 227.43 414.13 225.51C415.72 223.69 416.36 222.31 416.28 220.89C416.16 219.09 415.2 217.49 413.44 216.19C410.89 214.31 406.98 213.67 403.54 214.57C402.71 214.78 401.64 215.21 400.93 215.61C400.88 215.64 400.67 215.76 400.29 215.97C400.16 215.89 400.08 215.85 400.07 215.84C398.86 215.11 397.39 214.57 395.93 214.33C395.47 214.25 393.94 214.12 393.69 214.14C393.63 214.15 393.29 214.17 392.94 214.2C390.21 214.39 387.74 215.43 386.09 217.08Z" />
+        </motion.svg>
       </div>
     </div>
   )
