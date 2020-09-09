@@ -121,6 +121,9 @@ $or_end_color: rgba(255, 255, 255, .3);
             cursor: pointer;
             text-shadow: none;
             color: $color-tertiary;
+            &.2 {
+              pointer-events: none;
+            }
           }
         }
       }

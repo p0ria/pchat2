@@ -5,6 +5,9 @@ export const LoginActionTypes = {
   VerifyCode: '[LOGIN] Verify Code',
   VerifyCodeSuccess: '[LOGIN] Verify Code Success',
   VerifyCodeFail: '[LOGIN] Verify Code Fail',
+  ResendVerificationCode: '[LOGIN] Resend Verification Code',
+  ResendVerificationCodeSuccess: '[LOGIN] Resend Verification Code Success',
+  ResendVerificationCodeFail: '[LOGIN] Resend Verification Code Fail',
   LoginByGoogle: '[LOGIN] Login By Google',
   LoginByEmail: '[LOGIN] Login By Email',
   LoginSuccess: '[LOGIN] Login Success',
@@ -35,6 +38,19 @@ export const loginVerifyCodeSuccess = () => ({
 
 export const loginVerifyCodeFail = (error: string) => ({
   type: LoginActionTypes.VerifyCodeFail,
+  payload: error
+})
+
+export const loginResendVerificationCode = () => ({
+  type: LoginActionTypes.ResendVerificationCode
+})
+
+export const loginResendVerificationCodeSuccess = () => ({
+  type: LoginActionTypes.ResendVerificationCodeSuccess
+})
+
+export const loginResendVerificationCodeFail = (error: string) => ({
+  type: LoginActionTypes.ResendVerificationCodeFail,
   payload: error
 })
 

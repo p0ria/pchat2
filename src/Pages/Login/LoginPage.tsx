@@ -5,15 +5,14 @@ import LogoText from "../../components/Logo-Text/Logo-Text";
 import Button, { ButtonKind } from "../../components/Button/Button";
 import { validateEmail } from "../../commons/string-utilities";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUiState, selectLoginError, selectEmailAddress } from "../../state/login/login.selectors";
+import { selectUiState, selectLoginError, selectEmailAddress, selectResent } from "../../state/login/login.selectors";
 import { LoginUiState } from "../../state/login/login.state";
-import { loginVerifyCode, loginByEmail } from "../../state/login/login.actions";
+import { loginVerifyCode, loginByEmail, loginGetVerificationCode, loginResendVerificationCode } from "../../state/login/login.actions";
 import Spinner from "react-spinner";
 import CheckMark from "../../components/CheckMark/CheckMark";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHistory } from "react-router-dom";
 import GoogleBtn from "../../components/GoogleBtn/GoogleBtn";
-import { ThemeContext } from "../../contexts/ThemeContext";
 
 const dialogVariants = {
   hidden: {
@@ -40,11 +39,13 @@ const timerVariants = {
   heartbit: {
     x: 0,
     y: 0,
-    scale: 1.2,
+    scale: [1.2, .9],
     opacity: 1,
     fontWeight: 900,
     transition: {
-      yoyo: Infinity
+      scale: {
+        yoyo: Infinity
+      }
     }
   },
   exit: {
@@ -61,11 +62,11 @@ const timerVariants = {
 const redoVariants = {
   hidden: {
     scale: 2,
-    textShadow: "0 2px 4px rgba(0, 0, 0, .3)"
+    textShadow: "0 2px 4px rgba(0, 0, 0, .5)"
   },
   visible: {
     scale: 1,
-    textShadow: "0 1 4px rgba(0, 0, 0, .1)"
+    textShadow: "0 2px 4px rgba(0, 0, 0, .3)"
   },
   hover: {
     scale: 1.2,
@@ -73,17 +74,31 @@ const redoVariants = {
     transition: { type: 'spring', stiffness: 300, damping: 5 }
   },
   exit: {
+    opacity: 0,
+    transition: {
+      duration: .1
+    }
+  },
+  visible2: {
+    scale: 1.2,
+    textShadow: "0 2px 4px rgba(0, 0, 0, .3)",
+    rotate: -20,
+    transition: { type: 'spring', stiffness: 300, damping: 5 }
+  },
+  exit2: {
+    scale: .2,
     rotate: [0, 1000],
     opacity: 0,
     transition: {
-      duration: 5
+      duration: .5
     }
   }
 }
+const VERIFICATION_TIME = 10;
 const TIMER_DANGER_THRESHOLD = 30;
 let verificationInterval: any;
 export default () => {
-  const loginEmail = useSelector(selectEmailAddress) as string;
+  const stateEmail = useSelector(selectEmailAddress) as string;
   const uiState: LoginUiState = useSelector(selectUiState);
   const loginError = useSelector(selectLoginError);
   const dispatch = useDispatch();
@@ -91,22 +106,32 @@ export default () => {
   const emailRef = createRef<HTMLInputElement>();
   const codeRef = createRef<HTMLInputElement>();
   const history = useHistory();
-  const [verificationTimer, setVerificationTimer] = useState(1);
-  const [redo, setRedo] = useState(false);
+  const [verificationTimer, setVerificationTimer] = useState(VERIFICATION_TIME);
+  const [resent, setResent] = useState(false);
+  const stateResent = useSelector(selectResent);
+
   useEffect(() => {
     if (uiState === 'verified') {
       setTimeout(() => history.push("/"), 5000);
     }
     if (uiState === 'verify') {
-      if (verificationInterval) clearInterval(verificationInterval);
-      verificationInterval = setInterval(() => {
-        setVerificationTimer(a => a - 1);
-      }, 1000)
+      resetTimer();
     }
   }, [uiState])
+
   useEffect(() => {
     !verificationTimer && verificationInterval && clearInterval(verificationInterval);
   }, [verificationTimer]);
+
+  useEffect(() => {
+    if (stateResent) {
+      setResent(true);
+      setTimeout(() => {
+        resetTimer();
+        setResent(false);
+      }, 100)
+    }
+  }, [stateResent])
 
   const handleEmailSubmit = async () => {
     const email = emailRef.current?.value;
@@ -124,7 +149,7 @@ export default () => {
     if (!code) {
       setError('Verification code can not be empty');
     } else {
-      dispatch(loginVerifyCode(loginEmail, code));
+      dispatch(loginVerifyCode(stateEmail, code));
     }
   };
 
@@ -138,9 +163,16 @@ export default () => {
     }
   };
 
+  const resendCode = () => {
+    dispatch(loginResendVerificationCode());
+  }
+
   const resetTimer = () => {
-    setRedo(true);
-    setVerificationTimer(40);
+    setVerificationTimer(VERIFICATION_TIME);
+    if (verificationInterval) clearInterval(verificationInterval);
+    verificationInterval = setInterval(() => {
+      setVerificationTimer(a => a - 1);
+    }, 1000)
   }
 
   const renderSwitch = () => {
@@ -165,6 +197,7 @@ export default () => {
     >
       <TextInput label="Please enter your email address"
         placeholder="email@address.com"
+        autoFocus="true"
         error={error}
         onKeyDown={handleEnter}
         ref={emailRef}
@@ -192,7 +225,7 @@ export default () => {
       exit="exit"
     >
       <div className="VerificationCode-Input">
-        <TextInput label={`Please enter the verification code sent to ${loginEmail}`}
+        <TextInput label={`Please enter the verification code sent to ${stateEmail}`}
           placeholder="(Verification code)"
           error={error}
           onKeyDown={handleEnter}
@@ -203,22 +236,36 @@ export default () => {
             <motion.label className={`${verificationTimer < TIMER_DANGER_THRESHOLD ? 'danger' : ''}`}
               key={1}
               variants={timerVariants}
-              initial={redo ? 'exit' : false}
+              initial={resent ? 'exit' : false}
               animate={verificationTimer < TIMER_DANGER_THRESHOLD ? 'heartbit' : 'visible'}
               exit="exit"
             >{verificationTimer}
             </motion.label> :
-            <motion.label className="redo"
-              key={2}
-              variants={redoVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover='hover'
-              exit="exit"
-              onClick={() => resetTimer()}
-            >
-              <i className="fa fa-undo"></i>
-            </motion.label>
+            <>
+              {!resent ?
+                <motion.label className="redo 1"
+                  key={2}
+                  variants={redoVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover="hover"
+                  exit="fastexit"
+                  onClick={() => resendCode()}
+                >
+                  <i className="fa fa-undo"></i>
+                </motion.label>
+                :
+                <motion.label className="redo 2"
+                  key={3}
+                  variants={redoVariants}
+                  initial="visible2"
+                  animate="visible2"
+                  exit="exit2"
+                >
+                  <i className="fa fa-undo"></i>
+                </motion.label>
+              }
+            </>
           }
         </AnimatePresence>
       </div>

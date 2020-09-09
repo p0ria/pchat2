@@ -17,3 +17,8 @@ export const selectLoginError = createSelector(
   selectLoginState,
   state => state.error
 );
+
+export const selectResent = createSelector(
+  selectLoginState,
+  state => state.resent
+)

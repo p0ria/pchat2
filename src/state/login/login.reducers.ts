@@ -43,6 +43,24 @@ export const loginReducer = (
         uiState: "verify",
         error: action.payload,
       };
+    case LoginActionTypes.ResendVerificationCode:
+      return {
+        ...state,
+        resent: false,
+        error: null
+      };
+    case LoginActionTypes.ResendVerificationCodeSuccess:
+      return {
+        ...state,
+        resent: true,
+        error: null
+      };
+    case LoginActionTypes.ResendVerificationCodeFail:
+      return {
+        ...state,
+        resent: false,
+        error: action.payload
+      };
     case LoginActionTypes.LoginByGoogle:
     case LoginActionTypes.LoginByEmail:
       return {

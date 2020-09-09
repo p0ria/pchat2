@@ -12,6 +12,8 @@ import {
   loginFail,
   loginSuccess,
   loginGetVerificationCode,
+  loginResendVerificationCodeSuccess,
+  loginResendVerificationCodeFail,
 } from "./login.actions";
 import { selectEmailAddress } from "./login.selectors";
 
@@ -22,6 +24,16 @@ export function* getVerificationCodeSaga(action: Action) {
     yield put(loginGetVerificationCodeSuccess());
   } catch (error) {
     yield put(loginGetVerificationCodeFail("Network error, please try latter"));
+  }
+}
+
+export function* resendVerificationCodeSaga(action: Action) {
+  try {
+    const email = yield select(selectEmailAddress);
+    yield call(api, Apis.getVerificationCode, { url: email });
+    yield put(loginResendVerificationCodeSuccess());
+  } catch (error) {
+    yield put(loginResendVerificationCodeFail("Network error, please try latter"));
   }
 }
 
@@ -46,7 +58,7 @@ export function* verifyCodeSaga(action: Action) {
 export function* loginByGoogleSaga(action: Action) {
   try {
     const {data: {email, access_token}} = yield call(api, Apis.loginByGoogle, {data: {tokenId: action.payload}});
-    yield checkTokenSaga(email, access_token);
+    yield checkToken(email, access_token);
   } catch (error) {
     yield put(loginFail(error));
   }
@@ -54,10 +66,10 @@ export function* loginByGoogleSaga(action: Action) {
 
 export function* loginByEmailSaga(action: Action) {
   const {data: {email, access_token}} = yield call(api, Apis.loginByEmail, {data: {email: action.payload}});
-  yield checkTokenSaga(email, access_token);
+  yield checkToken(email, access_token);
 }
 
-function* checkTokenSaga(email: string, access_token: string) {
+function* checkToken(email: string, access_token: string) {
   if(email && access_token) yield put(loginSuccess({email, token: access_token}));
 }
 
@@ -71,6 +83,7 @@ export function* loginSuccessSaga(action: Action) {
 
 export function* loginSaga() {
   yield takeEvery(LoginActionTypes.GetVerificationCode, getVerificationCodeSaga);
+  yield takeEvery(LoginActionTypes.ResendVerificationCode, resendVerificationCodeSaga);
   yield takeEvery(LoginActionTypes.VerifyCode, verifyCodeSaga);
   yield takeEvery(LoginActionTypes.LoginByGoogle, loginByGoogleSaga);
   yield takeEvery(LoginActionTypes.LoginByEmail, loginByEmailSaga);
