@@ -9,13 +9,16 @@ export const LoginActionTypes = {
   ResendVerificationCodeSuccess: '[LOGIN] Resend Verification Code Success',
   ResendVerificationCodeFail: '[LOGIN] Resend Verification Code Fail',
   LoginByGoogle: '[LOGIN] Login By Google',
-  LoginByEmail: '[LOGIN] Login By Email',
   LoginSuccess: '[LOGIN] Login Success',
-  LoginFail: '[LOGIN] Login Fail'
+  LoginFail: '[LOGIN] Login Fail',
+  LoadToken: '[LOGIN] Load Token',
+  LoadTokenSuccess: '[LOGIN] Load Token Success',
+  LoadTokenFail: '[LOGIN] Load Token Fail'
 }
 
-export const loginGetVerificationCode = () => ({
-  type: LoginActionTypes.GetVerificationCode
+export const loginGetVerificationCode = (email: string) => ({
+  type: LoginActionTypes.GetVerificationCode,
+  payload: email
 })
 
 export const loginGetVerificationCodeSuccess = () => ({
@@ -32,8 +35,9 @@ export const loginVerifyCode = (email: string, code: string) => ({
   payload: {email, code} 
 })
 
-export const loginVerifyCodeSuccess = () => ({
+export const loginVerifyCodeSuccess = (token: string) => ({
   type: LoginActionTypes.VerifyCodeSuccess,
+  payload: token
 })
 
 export const loginVerifyCodeFail = (error: string) => ({
@@ -59,17 +63,25 @@ export const loginByGoogle = (tokenId: string) => ({
   payload: tokenId
 })
 
-export const loginByEmail = (email: string) => ({
-  type: LoginActionTypes.LoginByEmail,
-  payload: email
-})
-
-export const loginSuccess = (credentials: {email: string, token: string}) => ({
+export const loginSuccess = (email: string) => ({
   type: LoginActionTypes.LoginSuccess,
-  payload: credentials
+  payload: email
 })
 
 export const loginFail = (error: string) => ({
   type: LoginActionTypes.LoginFail,
   payload: error
+})
+
+export const loadToken = () => ({
+  type: LoginActionTypes.LoadToken
+})
+
+export const loadTokenSuccess = (token: string) => ({
+  type: LoginActionTypes.LoadTokenSuccess,
+  payload: token
+})
+
+export const loadTokenFail = () => ({
+  type: LoginActionTypes.LoadTokenFail
 })

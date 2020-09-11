@@ -22,3 +22,8 @@ export const selectResent = createSelector(
   selectLoginState,
   state => state.resent
 )
+
+export const selectToken = createSelector(
+  selectLoginState,
+  state => state.token
+)
