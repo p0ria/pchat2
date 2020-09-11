@@ -11,7 +11,7 @@ export const initialLoginState: LoginState = {
   emailAddress: null,
   token: null,
   uiState: 'generate',
-  resent: false,
+  resent: true,
   error: null
 };
 

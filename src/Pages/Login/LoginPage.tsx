@@ -86,8 +86,8 @@ const redoVariants = {
     transition: { type: 'spring', stiffness: 300, damping: 5 }
   },
   exit2: {
-    scale: .2,
-    rotate: [0, 1000],
+    scale: .1,
+    rotate: [0, -1000],
     opacity: 0,
     transition: {
       duration: .5
@@ -127,8 +127,8 @@ export default () => {
     if (uiState === 'verified') {
       setTimeout(() => history.push("/"), 5000);
     }
-    if (uiState === 'verify') {
-      resetTimer();
+    if(uiState === 'verify' && loginError) {
+      setVerificationTimer(0);
     }
   }, [uiState])
 
@@ -158,6 +158,10 @@ export default () => {
   };
 
   const handleCodeSubmit = async () => {
+    if(loginError) {
+      setError('First click resend code >');
+      return;
+    }
     const code = codeRef.current?.value;
     if (!code) {
       setError('Verification code can not be empty');
@@ -178,6 +182,8 @@ export default () => {
 
   const resendCode = () => {
     dispatch(loginResendVerificationCode());
+    setError(null);
+    if(codeRef.current) codeRef.current.value = '';
   }
 
   const resetTimer = () => {
