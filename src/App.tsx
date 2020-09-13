@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from './Pages/Home/HomePage';
 import { useDispatch } from 'react-redux';
 import { loadToken } from './state/login/login.actions';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
   const dispatch = useDispatch();
@@ -15,9 +16,7 @@ function App() {
         <Route path="/login">
           <LoginPage />
         </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
+        <ProtectedRoute component={HomePage} />
       </Switch>
     </div>
   );
