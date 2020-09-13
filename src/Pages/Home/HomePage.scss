@@ -1,3 +1,31 @@
+@import "../../styles//colors";
+
 .HomePage {
-  
+  width: 100vw;
+  height: 100vh;
+  background-color: red;
+  display: flex;
+  flex-direction: row;
+
+  .HomePage-Left {
+    flex: 0 0 200px;
+    height: 100%;
+    background: linear-gradient(180deg, #fff, $color-primary);
+    display: flex;
+    flex-direction: column;
+
+    .HomePage-Left__Top {
+      flex: 0 0 80px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      box-shadow: 0 2px 10px -5px $color-primary;
+    }
+  }
+
+  .HomePage-Right {
+    flex: 1;
+    height: 100%;
+    background-color: green;
+  }
 }
