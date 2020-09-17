@@ -27,13 +27,13 @@ export default({...props}) => {
     <div className="GoogleBtn">
       {isLoggedIn ? 
         <GoogleLogout
-          clientId="138661202116-frv54rhkfqjmpft9do7katdfu9anuuat.apps.googleusercontent.com"
+          clientId={process.env.OAUTH_CLIENT_ID}
           buttonText="Logout"
           onLogoutSuccess={onLogout}
           onFailure={handleLogoutFailure}
         /> :
         <GoogleLogin
-          clientId="138661202116-frv54rhkfqjmpft9do7katdfu9anuuat.apps.googleusercontent.com"
+          clientId={process.env.OAUTH_CLIENT_ID}
           buttonText="Sign in with Google"
           onSuccess={onLogin}
           onFailure={handleLoginFailure}

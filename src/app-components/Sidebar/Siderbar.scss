@@ -1,0 +1,11 @@
+@import "../../styles/colors";
+
+.Sidebar {
+  background: linear-gradient(180deg, #fff, $color-primary);
+  display: flex;
+  flex-direction: column;
+
+  .SidebarTop {
+    flex: 0 0 80px;
+  }
+}

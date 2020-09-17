@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 function App() {
   const dispatch = useDispatch();
   dispatch(loadToken());
+
   return (
     <div className="App">
       <Switch>

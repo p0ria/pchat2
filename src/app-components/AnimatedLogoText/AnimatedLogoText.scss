@@ -1,0 +1,12 @@
+@import "../../styles/colors";
+
+.AnimatedLogoText {
+  font-family: "Orbitron";
+  letter-spacing: 5px;
+  font-weight: bold;
+  margin-left: 10px;
+  color: $color-primary-dark;
+  span {
+    display: inline-block;
+  }
+}

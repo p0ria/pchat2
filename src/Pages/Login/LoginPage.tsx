@@ -1,7 +1,6 @@
-import React, { useState, createRef, useEffect, useReducer, useContext } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import "./LoginPage.scss";
 import TextInput from "../../components/TextInput/TextInput";
-import LogoText from "../../components/Logo-Text/Logo-Text";
 import Button, { ButtonKind } from "../../components/Button/Button";
 import { validateEmail } from "../../commons/string-utilities";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +12,7 @@ import CheckMark from "../../components/CheckMark/CheckMark";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHistory } from "react-router-dom";
 import GoogleBtn from "../../components/GoogleBtn/GoogleBtn";
+import LogoText from "../../app-components/LogoText/LogoText";
 
 const dialogVariants = {
   hidden: {
@@ -124,11 +124,11 @@ export default () => {
   const stateResent = useSelector(selectResent);
 
   useEffect(() => {
-    if (uiState === 'verified') {
-      setTimeout(() => history.push("/"), 5000);
-    }
     if(uiState === 'verify' && loginError) {
       setVerificationTimer(0);
+    }
+    if (uiState === 'verified') {
+      setTimeout(() => history.push("/"), 5000);
     }
   }, [uiState])
 
@@ -216,7 +216,7 @@ export default () => {
     >
       <TextInput label="Please enter your email address"
         placeholder="email@address.com"
-        autoFocus="true"
+        autoFocus={true}
         error={error}
         onKeyDown={handleEnter}
         ref={emailRef}

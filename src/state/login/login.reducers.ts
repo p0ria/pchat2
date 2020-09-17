@@ -18,6 +18,7 @@ export const loginReducer = (
       return {
         ...state,
         uiState: "verify",
+        resent: true,
         error: null,
       };
     case LoginActionTypes.GetVerificationCodeFail:
