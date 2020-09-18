@@ -5,6 +5,7 @@ module.exports = gql `
     _id: ID
     name: String!
     email: String!
+    avatarUrl: String
     audiences: [Audience]!
   }
 
@@ -22,6 +23,7 @@ module.exports = gql `
     _id: ID
     type: AudienceType!
     name: String!
+    avatarUrl: String
     messages: [Message]!
   }
 

@@ -28,8 +28,9 @@ async function callMeQuery(token: any) {
     headers: { authorization: token}
   });
   const variables = {
+    audienceId: '5f64a1756dba54446cc8b678',
     type: 'TEXT',
-    value: 'SALAM DONYA!'
+    value: Buffer.from('SALAM DONYA!').toString('base64')
   }
   const data = await client.request(CREATE_MESSAGE_MUTATION, variables);
   console.log({data});
