@@ -17,3 +17,10 @@ exports.findUserByEmail = email => {
   return User.findOne({email}).exec();
 }
 
+exports.findUserById = id => {
+  return User.findById(id);
+}
+
+exports.populateUserAudiences = async user => {
+  return  User.populate(user, 'audiences')
+}

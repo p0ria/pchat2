@@ -1,22 +1,23 @@
-const { AuthenticationError } = require('apollo-server');
-require('./models/Audience');
-const Message = require('./models/Message');
+const {gql} = require('apollo-server');
+const { Audience} = require('../models/Audience');
+const { Message } = require('../models/Message');
+const { authenticated } = require('../utils/gql-utils');
 
-const authenticated = next => (root, args, ctx, info) => {
-  if (!ctx.currentUser) {
-    throw new AuthenticationError('You must be logged in')
+const typeDefs = gql`
+  input CreateMessageInput {
+    audienceId: ID
+    type: MessageType!
+    value: String!
   }
-  return next(root, args, ctx, info)
-}
 
-module.exports = {
-  Query: {
-    me: authenticated((root, args, ctx) => ctx.currentUser)
-  },
+  type Mutation {
+    createMessage(input: CreateMessageInput!): Message
+  }
+`
+const resolvers = {
   Mutation: {
     createMessage: authenticated(async (_, { input }, { currentUser }) => {
       const { audienceId, type, value } = input;
-      console.log(audienceId, type, value);
       const newMessage = await new Message({
         author: currentUser._id,
         audience: audienceId,
@@ -37,3 +38,5 @@ module.exports = {
     })
   }
 }
+
+module.exports = [typeDefs, resolvers];
