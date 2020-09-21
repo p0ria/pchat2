@@ -1,7 +1,8 @@
 const {gql} = require('apollo-server');
-const { Audience} = require('../models/Audience');
-const { Message } = require('../models/Message');
+const Audience = require('../models/Audience');
+const Message = require('../models/Message');
 const { authenticated } = require('../utils/gql-utils');
+const { MessageController } = require('../controllers/message.controller');
 
 const typeDefs = gql`
   input CreateMessageInput {
@@ -18,23 +19,12 @@ const resolvers = {
   Mutation: {
     createMessage: authenticated(async (_, { input }, { currentUser }) => {
       const { audienceId, type, value } = input;
-      const newMessage = await new Message({
+      return MessageController.createMessage({
         author: currentUser._id,
         audience: audienceId,
         type,
         value
-      }).save();
-      const messageAdded = await Message.populate(newMessage, ['author', 'audience']);
-      const buf = Buffer.from(messageAdded.value);
-      return {
-        _id: messageAdded._id,
-        author: messageAdded.author,
-        type: messageAdded.type,
-        value: buf.toString(),
-        audience: messageAdded.audience,
-        createdAt: messageAdded.createdAt,
-        updatedAt: messageAdded.updatedAt
-      };
+      });
     })
   }
 }

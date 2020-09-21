@@ -1,5 +1,5 @@
 const {gql} = require('apollo-server');
-const { findUserById, populateUserAudiences } = require('../controllers/user.controller');
+const { UserController } = require('../controllers/user.controller');
 
 const typeDefs = gql`
   type User {
@@ -13,9 +13,8 @@ const typeDefs = gql`
 
 const resolvers = {
   User: {
-    audiences: async ({_id}) => {
-      let user = await findUserById(_id);
-      const {audiences} = await populateUserAudiences(user);
+    audiences: async (user) => {
+      const {audiences} = await UserController.populate(user, 'audiences');
       return audiences;
     }
   }

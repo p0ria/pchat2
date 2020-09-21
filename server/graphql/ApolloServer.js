@@ -1,12 +1,12 @@
 const { merge } = require('lodash');
-const [Query, QueryResolver] = require('./Query');
+const [ Query, QueryResolver ] = require('./Query');
 const [ Mutation, MutationResolver ] = require('./Mutation');
 const [ Audience, AudienceResolver ] = require('./Audience');
 const [ Message, MessageResolver ] = require('./Message');
 const [ User, UserResolver ] = require('./User');
 
 const { ApolloServer, makeExecutableSchema } = require('apollo-server');
-const { verifyAuthToken } = require('../controllers/user.controller');
+const { UserController } = require('../controllers/user.controller');
 
 const schema = makeExecutableSchema({
   typeDefs: [Query, Mutation, Audience, Message, User],
@@ -20,7 +20,7 @@ const server = new ApolloServer({
     let currentUser = null;
     try {
       authToken = req.headers.authorization;
-      if(authToken) currentUser = await verifyAuthToken(authToken);
+      if(authToken) currentUser = await UserController.verifyAuthToken(authToken);
     } catch(err) {
       console.error(`Unable to authenticate user with token ${authToken}`, err.message);
     }
@@ -28,4 +28,4 @@ const server = new ApolloServer({
   }
 });
 
-module.exports = [server];
+module.exports = server;
