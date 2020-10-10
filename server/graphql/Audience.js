@@ -2,7 +2,7 @@ const { gql } = require("apollo-server");
 
 const typeDefs = gql`
   enum AudienceType {
-    USER, GROUP
+    PRIVATE, GROUP
   }
 
   type Audience {
@@ -14,7 +14,7 @@ const typeDefs = gql`
   }
 `
 const resolvers = {
-  
+
 }
 
 module.exports = [typeDefs, resolvers];
