@@ -1,0 +1,22 @@
+.AudienceListItem {
+    display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    cursor: pointer;
+    
+    .AudienceListItem-Avatar {
+        width: 42px;
+        height: 42px;
+        background-size: contain;
+        border-radius: 10px;
+    }
+
+    .AudienceListItem-Title {
+        flex: 1;
+        margin-left: 10px;
+    }
+
+    &:hover {
+        opacity: .9;
+    }
+}

@@ -14,7 +14,9 @@ const typeDefs = gql`
   }
 `
 const resolvers = {
-
+  Audience: {
+    messages: (parent) => ['1', '2', '3']
+  }
 }
 
 module.exports = [typeDefs, resolvers];

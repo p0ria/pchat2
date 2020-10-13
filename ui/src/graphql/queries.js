@@ -9,4 +9,15 @@ export const ME_QUERY = `
       }
     }
   }
+`;
+
+export const AUDIENCES_QUERY = `
+  {
+    audiences {
+      _id
+      name
+      type
+      avatarUrl
+    }
+  } 
 `

@@ -20,7 +20,6 @@ import {
 } from "./login.actions";
 import { selectEmailAddress } from "./login.selectors";
 import { TOKEN_KEY } from "../../commons/constants";
-import { useHistory } from "react-router-dom";
 
 export function* getVerificationCodeSaga(action: Action) {
   try {

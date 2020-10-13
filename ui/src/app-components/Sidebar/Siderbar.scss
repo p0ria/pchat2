@@ -6,6 +6,11 @@
   flex-direction: column;
 
   .SidebarTop {
+    width: 100%;
     flex: 0 0 80px;
+  }
+
+  .SidebarContent {
+    flex: 1;
   }
 }

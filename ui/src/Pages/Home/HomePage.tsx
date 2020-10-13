@@ -5,6 +5,7 @@ import { GraphQLClient } from 'graphql-request';
 import { selectToken } from '../../state/login/login.selectors';
 import { useSelector } from 'react-redux';
 import { CREATE_MESSAGE_MUTATION } from '../../graphql/mutations';
+import { AUDIENCES_QUERY } from '../../graphql/queries';
 
 
 export default () => {
@@ -27,11 +28,13 @@ async function callMeQuery(token: any) {
   const client = new GraphQLClient('http://localhost:4000/graphql', {
     headers: { authorization: token }
   });
-  const variables = {
-    audienceId: '5f820c23730a153f94da74b2',
-    type: 'TEXT',
-    value: Buffer.from('SALAM DONYA!').toString('base64')
-  }
-  const data = await client.request(CREATE_MESSAGE_MUTATION, variables);
+  // const variables = {
+  //   audienceId: '5f820c23730a153f94da74b2',
+  //   type: 'TEXT',
+  //   value: Buffer.from('SALAM DONYA!').toString('base64')
+  // }
+  // const data = await client.request(CREATE_MESSAGE_MUTATION, variables);
+
+  const data = await client.request(AUDIENCES_QUERY);
   console.log({ data });
 }
