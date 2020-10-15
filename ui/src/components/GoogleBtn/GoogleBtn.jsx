@@ -3,7 +3,7 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { loginByGoogle } from '../../state/login/login.actions';
 
-export default({...props}) => {
+export default ({ ...props }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const dispatch = useDispatch();
@@ -11,8 +11,8 @@ export default({...props}) => {
     setIsLoggedIn(false);
     setAccessToken(null);
   }
-  const onLogin = ({tokenId}) => {
-    if(tokenId) {
+  const onLogin = ({ tokenId }) => {
+    if (tokenId) {
       setIsLoggedIn(true);
       dispatch(loginByGoogle(tokenId));
     }
@@ -25,21 +25,21 @@ export default({...props}) => {
   }
   return (
     <div className="GoogleBtn">
-      {isLoggedIn ? 
+      {isLoggedIn ?
         <GoogleLogout
-          clientId={process.env.OAUTH_CLIENT_ID}
+          clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
           buttonText="Logout"
           onLogoutSuccess={onLogout}
           onFailure={handleLogoutFailure}
         /> :
         <GoogleLogin
-          clientId={process.env.OAUTH_CLIENT_ID}
+          clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
           buttonText="Sign in with Google"
           onSuccess={onLogin}
           onFailure={handleLoginFailure}
           cookiePolicy={"single_host_origin"}
           responseType="code,token"
-          isSignedIn={false} 
+          isSignedIn={false}
         />
       }
     </div>

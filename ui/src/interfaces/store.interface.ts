@@ -1,3 +1,4 @@
+import AudienceState from "../state/audience/audience.state";
 import LoginState from "../state/login/login.state";
 
 export interface Action {
@@ -6,5 +7,6 @@ export interface Action {
 }
 
 export interface RootState {
-  login: LoginState
+  login: LoginState,
+  audience: AudienceState
 }

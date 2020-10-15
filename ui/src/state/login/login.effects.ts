@@ -1,7 +1,7 @@
 import { Action } from "./../../interfaces/store.interface";
 import { Apis } from "./../../services/api";
 
-import { call, takeEvery, put, select } from "redux-saga/effects";
+import { call, takeEvery, put, select, all } from "redux-saga/effects";
 import api from "../../services/api";
 import {
   LoginActionTypes,
@@ -82,13 +82,13 @@ export function* loadTokenSaga(action: Action) {
   yield put(token ? loadTokenSuccess(token) : loadTokenFail());
 }
 
-export function* loginSaga() {
-  yield takeEvery(LoginActionTypes.GetVerificationCode, getVerificationCodeSaga);
-  yield takeEvery(LoginActionTypes.ResendVerificationCode, resendVerificationCodeSaga);
-  yield takeEvery(LoginActionTypes.VerifyCode, verifyCodeSaga);
-  yield takeEvery(LoginActionTypes.LoginByGoogle, loginByGoogleSaga);
-  yield takeEvery(LoginActionTypes.LoginSuccess, loginSuccessSaga);
-  yield takeEvery(LoginActionTypes.LoadToken, loadTokenSaga);
-}
+export const loginSagas = [
+  takeEvery(LoginActionTypes.GetVerificationCode, getVerificationCodeSaga),
+  takeEvery(LoginActionTypes.ResendVerificationCode, resendVerificationCodeSaga),
+  takeEvery(LoginActionTypes.VerifyCode, verifyCodeSaga),
+  takeEvery(LoginActionTypes.LoginByGoogle, loginByGoogleSaga),
+  takeEvery(LoginActionTypes.LoginSuccess, loginSuccessSaga),
+  takeEvery(LoginActionTypes.LoadToken, loadTokenSaga),
+];
 
 

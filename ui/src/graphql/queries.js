@@ -4,7 +4,7 @@ export const ME_QUERY = `
       _id
       name
       email
-      messages {
+      audiences {
         _id
       }
     }

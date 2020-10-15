@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const AudienceSchema = new mongoose.Schema({
   _id: mongoose.SchemaTypes.ObjectId,
   type: String,
-  name: String,
   avatarUrl: String,
   messages: [
     {
