@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import "./AudienceListItem.scss";
 
 const itemVariants = {
@@ -10,9 +10,9 @@ const itemVariants = {
         x: 0,
         y: 0,
         transition: {
-            duration: .5,
-            delay: .5,
-            type: "spring"
+            type: "spring",
+            stiffness: 120,
+            damping: 13
         }
     }
 }
@@ -20,8 +20,6 @@ const itemVariants = {
 export default function AudienceListItem({ name, avatarUrl }) {
     return (<motion.div className="AudienceListItem"
         variants={itemVariants}
-        initial="initial"
-        animate="rest"
     >
         <img className="AudienceListItem-Avatar" src={avatarUrl} />
         <span className="AudienceListItem-Title">{name}</span>

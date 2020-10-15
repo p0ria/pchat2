@@ -20,7 +20,7 @@ const resolvers = {
     name: async (parent, _, { currentUser }) => {
       if (parent.type == 'PRIVATE') {
         const private = await PrivateController.findPrivateById(parent._id);
-        const otherId = private.user1 == currentUser._id ?
+        const otherId = String(currentUser._id) == String(private.user1) ?
           private.user2 : private.user1;
         const other = await UserController.findUserById(otherId);
         return other.name;
