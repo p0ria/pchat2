@@ -1,17 +1,10 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import './HomePage.scss';
 import Sidebar from '../../app-components/Sidebar/Sidebar';
-import { GraphQLClient } from 'graphql-request';
-import { selectToken } from '../../state/login/login.selectors';
-import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_MESSAGE_MUTATION } from '../../graphql/mutations';
-import { AUDIENCES_QUERY, ME_QUERY } from '../../graphql/queries';
+import { useDispatch } from 'react-redux';
 import { actionGetAllAudiences } from '../../state/audience/audience.actions';
 
-
 export default () => {
-  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   useEffect(() => {
     //callMeQuery(token);
