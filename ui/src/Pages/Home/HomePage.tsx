@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import './HomePage.scss';
 import Sidebar from '../../app-components/Sidebar/Sidebar';
 import { GraphQLClient } from 'graphql-request';
@@ -14,7 +15,7 @@ export default () => {
   const dispatch = useDispatch();
   useEffect(() => {
     //callMeQuery(token);
-    dispatch(actionGetAllAudiences())
+    dispatch(actionGetAllAudiences());
   }, [])
 
   return (

@@ -4,15 +4,16 @@ import "./AudienceListItem.scss";
 
 const itemVariants = {
     initial: {
-        x: "100%"
+        scale: 2,
+        opacity: 0
     },
     rest: {
-        x: 0,
-        y: 0,
+        scale: 1,
+        opacity: 1,
         transition: {
             type: "spring",
-            stiffness: 120,
-            damping: 13
+            stiffness: 200,
+            damping: 20
         }
     }
 }

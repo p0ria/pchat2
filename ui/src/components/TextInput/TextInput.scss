@@ -10,7 +10,7 @@
     margin-bottom: $base * .5;
     margin-left: $base;
     font-size: .95rem;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   .TextInput-Border {
@@ -35,8 +35,8 @@
       position: absolute;
       bottom: 50%;
       right: -100%;
-      color: $color-danger;
-      background-color: $color-secondary;
+      color: var(--color-danger);
+      background-color: var(--color-secondary);
       padding: ($base / 4) $base;
       font-size: .85rem;
       transform: translateY(50%);
@@ -48,14 +48,14 @@
   &.focus {
 
     .TextInput-Border {
-      background-color: $color-primary;
+      background-color: rgba(var(--color-primary), 1);
     }
   }
 
   &.error {
 
     .TextInput-Border {
-      background-color:  $color-danger;
+      background-color:  var(--color-danger);
 
       .TextInput-Error {
         right: 4px;
