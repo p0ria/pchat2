@@ -20,3 +20,9 @@ export const CREATE_MESSAGE_MUTATION = `
     }
   }
 `
+
+export const CHANGE_AVATAR_MUTATION = `
+  mutation($avatarUrl: String!) {
+    changeAvatar(avatarUrl: $avatarUrl)
+  }
+`

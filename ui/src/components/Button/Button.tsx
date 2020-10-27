@@ -12,12 +12,12 @@ export interface IProps {
   [prop: string]: any
 }
 
-export default ({kind = ButtonKind.Default,...props}: IProps) => {
+export default ({ kind = ButtonKind.Default, ...props }: IProps) => {
   const [theme] = useContext(ThemeContext);
   const [active, setActive] = useState(false);
   let color1, color2;
-  switch(kind) {
-    case ButtonKind.Primary: 
+  switch (kind) {
+    case ButtonKind.Primary:
       color1 = theme.colors.primary;
       break;
     case ButtonKind.Secondary:
@@ -42,13 +42,13 @@ export default ({kind = ButtonKind.Default,...props}: IProps) => {
   const luminance = chroma(color1).luminance();
   const color = luminance > .5 ? theme.colors.text : theme.colors.textLight;
   const background = active ? color2 : `linear-gradient(${color1}, ${color2})`;
-  const boxShadow = `0 2px 10px -2px ${color2}`; 
+  const boxShadow = `0 2px 10px -2px ${color2}`;
   const mouseDown = () => setActive(true);
   const mouseUp = () => setActive(false);
 
   return (
-    <button className="Button" 
-      style={{color, background, boxShadow}} 
+    <button className="Button"
+      style={{ color, background, boxShadow }}
       onMouseDown={mouseDown} onMouseUp={mouseUp} onMouseLeave={mouseUp}
       {...props}>
       {props.children}

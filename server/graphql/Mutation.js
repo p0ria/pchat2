@@ -3,6 +3,7 @@ const Audience = require('../models/Audience');
 const Message = require('../models/Message');
 const { authenticated } = require('../utils/gql-utils');
 const { MessageController } = require('../controllers/message.controller');
+const { UserController } = require('../controllers/user.controller');
 
 const typeDefs = gql`
   input CreateMessageInput {
@@ -13,6 +14,7 @@ const typeDefs = gql`
 
   type Mutation {
     createMessage(input: CreateMessageInput!): Message
+    changeAvatar(avatarUrl: String!): String
   }
 `
 const resolvers = {
@@ -25,6 +27,10 @@ const resolvers = {
         type,
         value
       });
+    }),
+    changeAvatar: authenticated(async(_, { avatarUrl }, { currentUser }) => {
+      const user = UserController.changeUserAvatar(currentUser._id, avatarUrl);
+      return user.avatarUrl;
     })
   }
 }

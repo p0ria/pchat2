@@ -3,14 +3,17 @@ import Modal from 'react-awesome-modal';
 import Button, { ButtonKind } from '../../components/Button/Button';
 import './ProfileModal.scss';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { actionChangeAvatar } from '../../state/app/app.actions';
 
 export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props }) {
+    const [avatarUrl, setAvatarUrl] = useState();
+    const dispatcher = useDispatch();
+
     const handleFileUpload = async (files: FileList | null | undefined) => {
         if (!files) return;
         var selectedFile = files[0];
         var fd = new FormData();
-        debugger;
-        var x = process.env;
         fd.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET as string);
         fd.append('file', selectedFile);
         axios({
@@ -19,12 +22,18 @@ export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props
             data: fd,
             headers: { 'Content-Type': 'multipart/form-data' }
         })
-            .then(function (response) {
+            .then(function ({ status, data }) {
                 //handle success
-                console.log(response);
+                if (status == 200) {
+                    setAvatarUrl(data.url);
+                }
+                else {
+                    setAvatarUrl(null);
+                }
             })
             .catch(function (response) {
                 //handle error
+                setAvatarUrl(null);
                 console.log(response);
             });
     }
@@ -43,17 +52,22 @@ export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props
         const files = e.dataTransfer?.files;
         handleFileUpload(files);
     }
+    const submitAvatar = () => {
+        if (avatarUrl) {
+            dispatcher(actionChangeAvatar(avatarUrl));
+        }
+    }
     return (
         <Modal
             visible={isOpen}
-            width="400"
+            width="280"
             height="400"
             effect="fadeInUp"
             onClickAway={onClickAway}
             {...props}>
             <div className="ProfileModal">
                 <div className="ProfileModal-Header">
-                    <span>Choose Avatar</span>
+                    <span>Change Profile Picture</span>
                 </div>
                 <div className="ProfileModal-Content">
                     <label
@@ -61,11 +75,16 @@ export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props
                         onDragEnter={handleDragEnter}
                         onDragOver={handleDragOver}
                         onDrop={handleDrop}>
-                        <div className="drag-area">
-                            <span>drag & drop</span>
-                            <span>or</span>
-                            <span>browse</span>
-                        </div>
+                        {
+                            avatarUrl ?
+                                <img className="avatar-preview" src={avatarUrl} />
+                                :
+                                <div className="drag-area">
+                                    <span>drag & drop</span>
+                                    <span>or</span>
+                                    <span>browse</span>
+                                </div>
+                        }
                     </label>
                     <input
                         id="avatarInputFile"
@@ -74,7 +93,11 @@ export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props
                         onChange={e => handleFileUpload(e.target.files)} />
                 </div>
                 <div className="ProfileModal-Footer">
-                    <Button kind={ButtonKind.Success}>Accept</Button>
+                    <Button
+                        kind={ButtonKind.Success}
+                        onClick={submitAvatar}>
+                        ACCEPT
+                    </Button>
                 </div>
             </div>
         </Modal>)
