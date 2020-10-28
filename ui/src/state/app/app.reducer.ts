@@ -7,7 +7,7 @@ export const appReducer = (
     action: Action
 ): AppState => {
     switch(action.type) {
-        case AppActionTypes.ChangeAvatar:
+        case AppActionTypes.ChangeAvatarSuccess:
             return {
                 ...state,
                 user: {

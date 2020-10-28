@@ -1,8 +1,9 @@
-import { call, getContext, select, takeEvery } from "redux-saga/effects";
+import { call, getContext, put, select, takeEvery } from "redux-saga/effects";
 import { CHANGE_AVATAR_MUTATION } from "../../graphql/mutations";
 import { Action } from "../../interfaces/store.interface";
+import { actionGetAllAudiences } from "../audience/audience.actions";
 import { selectToken } from "../login/login.selectors";
-import { AppActionTypes } from "./app.actions";
+import { actionChangeAvatarSuccess, AppActionTypes } from "./app.actions";
 
 export function* changeAvatarSaga(action: Action) {
     try {
@@ -13,7 +14,8 @@ export function* changeAvatarSaga(action: Action) {
             avatarUrl: action.payload
         };
         const avatarUrl = yield call(client.request.bind(client), CHANGE_AVATAR_MUTATION, variables);
-        console.log(avatarUrl);
+        yield put(actionChangeAvatarSuccess(avatarUrl));
+        yield put(actionGetAllAudiences());
     } catch(error) {
         console.log(error);
     }

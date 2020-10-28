@@ -1,9 +1,10 @@
-const {gql} = require('apollo-server');
+const { gql } = require('apollo-server');
 const Audience = require('../models/Audience');
 const Message = require('../models/Message');
 const { authenticated } = require('../utils/gql-utils');
 const { MessageController } = require('../controllers/message.controller');
 const { UserController } = require('../controllers/user.controller');
+const { pubsub, EventTypes } = require('./Events');
 
 const typeDefs = gql`
   input CreateMessageInput {
@@ -28,8 +29,9 @@ const resolvers = {
         value
       });
     }),
-    changeAvatar: authenticated(async(_, { avatarUrl }, { currentUser }) => {
-      const user = UserController.changeUserAvatar(currentUser._id, avatarUrl);
+    changeAvatar: authenticated(async (_, { avatarUrl }, { currentUser }) => {
+      const { user, audience } = await UserController.changeUserAvatar(currentUser._id, avatarUrl);
+      pubsub.publish(EventTypes.AudiencesChanged, { audiencesChanged: [audience] });
       return user.avatarUrl;
     })
   }
