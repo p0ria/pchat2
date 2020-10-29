@@ -1,10 +1,27 @@
 import App from "../../App"
 
 export const AppActionTypes = {
+    SubscribeToWS: '[APP] Subscribe To WS',
+    SubscribeToWSFail: '[APP] Subscribe To WS Fail',
+    AppReconnected: '[APP] App Reconnected',
     ChangeAvatar: '[APP] Change Avatar',
     ChangeAvatarSuccess: '[APP] Change Avatar Success',
     ChangeAvatarFail: '[APP] Change Avatar Fail'
 }
+
+export const actionSubscribeToWS = dispatch => ({
+    type: AppActionTypes.SubscribeToWS,
+    payload: dispatch
+})
+
+export const actionSubscribeToWSFail = error => ({
+    type: AppActionTypes.SubscribeToWSFail,
+    payload: error
+})
+
+export const actionAppReconnected = () => ({
+    type: AppActionTypes.AppReconnected
+})
 
 export const actionChangeAvatar = avatarUrl => ({
     type: AppActionTypes.ChangeAvatar,
@@ -16,6 +33,7 @@ export const actionChangeAvatarSuccess = avatarUrl => ({
     payload: avatarUrl
 })
 
-export const actionChangeAvatarFail = () => ({
-    type: AppActionTypes.ChangeAvatarFail
+export const actionChangeAvatarFail = error => ({
+    type: AppActionTypes.ChangeAvatarFail,
+    payload: error
 })

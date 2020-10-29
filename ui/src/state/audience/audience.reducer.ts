@@ -15,6 +15,16 @@ export const audienceReducer = (
                 audiences: action.payload
             };
 
+        case AudienceActionTypes.AudiencesChanged:
+            return {
+                ...state,
+                audiences: [
+                    ...state.audiences.filter(audience =>
+                        action.payload.every(a => a._id !== audience._id)),
+                    ...action.payload
+                ].sort((a, b) => a.name <= b.name ? -1 : 1)
+            }
+
         default:
             return state;
     }

@@ -9,6 +9,8 @@ mongoose.connect(process.env.DB_URI, {
 }).then(() => console.log('DB connected!'))
   .catch(err => console.error(err));
 
-server.listen().then(({ url }) => {
-  console.log(`Server listening on ${url}`);
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+  console.log(`Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
 });

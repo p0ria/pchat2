@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
 import './HomePage.scss';
 import Sidebar from '../../app-components/Sidebar/Sidebar';
-import { useDispatch } from 'react-redux';
-import { actionGetAllAudiences } from '../../state/audience/audience.actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionAudiencesChanged, actionGetAllAudiences } from '../../state/audience/audience.actions';
+import { selectToken } from '../../state/login/login.selectors';
+import { createWsClient } from '../../services/client';
+import { AUDIENCES_CHANGED_SUBSCRIPTION } from '../../graphql/subscriptions';
+import { AUDIENCES_QUERY, ME_QUERY } from '../../graphql/queries';
+import { actionSubscribeToWS } from '../../state/app/app.actions';
 
 export default () => {
   const dispatch = useDispatch();
+  const token = useSelector(selectToken);
   useEffect(() => {
-    //callMeQuery(token);
-    dispatch(actionGetAllAudiences());
+    dispatch(actionSubscribeToWS(dispatch));
   }, [])
 
   return (
@@ -21,7 +26,7 @@ export default () => {
   )
 }
 
-async function callMeQuery(token: any) {
+async function callMeQuery(token: any, dispatch) {
   // const client = new GraphQLClient('http://localhost:4000/graphql', {
   //   headers: { authorization: token }
   // });
