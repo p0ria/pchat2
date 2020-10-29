@@ -1,7 +1,10 @@
+@import '../../styles/sizes';
+
 .ProfileModal {
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: rgba(var(--color-bg-primary), 1);
 
     .ProfileModal-Header {
         flex: 0 0 60px;
@@ -28,11 +31,13 @@
             bottom: 0;
             cursor: pointer;
             padding: 20px;
+            color: rgba(var(--color-text-light), .7);
 
             .avatar-preview {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+                border-radius: $radius;
             }
 
             .drag-area {
@@ -58,9 +63,14 @@
 
     .ProfileModal-Footer {
         flex: 0 0 60px;
-        padding: 0 20px; 
+        padding: 0 20px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
+    }
+
+    .ProfileModal-Spinner {
+        flex: 1;
+        display: flex;
     }
 }

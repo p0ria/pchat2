@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react'
+import React, { createContext, useState } from 'react'
 
 export interface IThemeContext {
   colors: {
@@ -16,7 +16,8 @@ export interface IThemeContext {
     orange: string,
     success: string,
     danger: string,
-    warn: string
+    warn: string,
+    gray: string
   }
 }
 
@@ -36,12 +37,13 @@ const initialThemeContext = {
     orange: "#ff6600",
     success: "#34d434",
     danger: "#e42f2f",
-    warn: "#fdfa37"
+    warn: "#fdfa37",
+    gray: "#999"
   }
 }
 
 export const ThemeContext = createContext<[IThemeContext, (theme: IThemeContext) => void]>(
-  [initialThemeContext, f => {}]
+  [initialThemeContext, f => { }]
 );
 
 export default function ThemeProvider(props: any) {

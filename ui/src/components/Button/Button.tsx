@@ -15,32 +15,42 @@ export interface IProps {
 export default ({ kind = ButtonKind.Default, ...props }: IProps) => {
   const [theme] = useContext(ThemeContext);
   const [active, setActive] = useState(false);
+  const { disabled } = props;
   let color1, color2;
-  switch (kind) {
-    case ButtonKind.Primary:
-      color1 = theme.colors.primary;
-      break;
-    case ButtonKind.Secondary:
-      color1 = theme.colors.secondary;
-      break;
-    case ButtonKind.Tertiary:
-      color1 = theme.colors.tertiary;
-      break;
-    case ButtonKind.Success:
-      color1 = theme.colors.success;
-      break;
-    case ButtonKind.Danger:
-      color1 = theme.colors.danger;
-      break;
-    case ButtonKind.Warning:
-      color1 = theme.colors.warn;
-      break;
-    default:
-      color1 = theme.colors.light;
+  if (disabled) {
+    color1 = theme.colors.gray;
+  } else {
+    switch (kind) {
+      case ButtonKind.Primary:
+        color1 = theme.colors.primary;
+        break;
+      case ButtonKind.Secondary:
+        color1 = theme.colors.secondary;
+        break;
+      case ButtonKind.Tertiary:
+        color1 = theme.colors.tertiary;
+        break;
+      case ButtonKind.Success:
+        color1 = theme.colors.success;
+        break;
+      case ButtonKind.Danger:
+        color1 = theme.colors.danger;
+        break;
+      case ButtonKind.Warning:
+        color1 = theme.colors.warn;
+        break;
+      default:
+        color1 = theme.colors.light;
+    }
   }
   color2 = chroma(color1).darken().hex();
   const luminance = chroma(color1).luminance();
-  const color = luminance > .5 ? theme.colors.text : theme.colors.textLight;
+  let color;
+  if (disabled) {
+    color = "#555";
+  } else {
+    color = luminance > .5 ? theme.colors.text : theme.colors.textLight;
+  }
   const background = active ? color2 : `linear-gradient(${color1}, ${color2})`;
   const boxShadow = `0 2px 10px -2px ${color2}`;
   const mouseDown = () => setActive(true);
