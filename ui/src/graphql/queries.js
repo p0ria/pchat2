@@ -1,4 +1,6 @@
-export const ME_QUERY = `
+import { gql } from "graphql-request";
+
+export const ME_QUERY = gql`
   {
     me {
       _id
@@ -11,7 +13,7 @@ export const ME_QUERY = `
   }
 `;
 
-export const AUDIENCES_QUERY = `
+export const AUDIENCES_QUERY = gql`
   {
     audiences {
       _id

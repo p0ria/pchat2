@@ -18,6 +18,7 @@ const server = new ApolloServer({
   schema,
   subscriptions: {
     onConnect: async ({ authToken }, webSocket) => {
+      console.log(`client connected to websocket`)
       if (authToken) {
         const currentUser = await UserController.verifyAuthToken(authToken);
         if (currentUser) return { currentUser };
