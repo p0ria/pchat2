@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server');
-const { pubsub, EventTypes } = require("./Events");
+const { pubsub, Topics } = require("./Topics");
 
 const typeDefs = gql`
     type Subscription {
@@ -10,7 +10,7 @@ const typeDefs = gql`
 const resolvers = {
     Subscription: {
         audiencesChanged: {
-            subscribe: () => pubsub.asyncIterator([EventTypes.AudiencesChanged])
+            subscribe: () => pubsub.asyncIterator([Topics.AudiencesChanged])
         }
     }
 }

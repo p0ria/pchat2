@@ -1,6 +1,6 @@
-export const CREATE_MESSAGE_MUTATION = `
+export const ADD_MESSAGE_MUTATION = `
   mutation($audienceId: ID!, $type: MessageType!, $value: String!) {
-    createMessage(input: {
+    addMessage(input: {
       audienceId: $audienceId,
       type: $type,
       value: $value

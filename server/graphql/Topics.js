@@ -1,9 +1,9 @@
 const { PubSub } = require("apollo-server");
 
-const EventTypes = {
+const Topics = {
     AudiencesChanged: 'AUDIENCES_CHANGED'
 };
 
 const pubsub = new PubSub();
 
-module.exports = { pubsub, EventTypes };
+module.exports = { pubsub, Topics };

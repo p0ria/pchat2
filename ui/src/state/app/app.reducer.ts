@@ -7,10 +7,6 @@ export const appReducer = (
     action: Action
 ): AppState => {
     switch (action.type) {
-        case AppActionTypes.SubscribeToWSFail:
-            console.log(action.payload);
-            return state;
-
         case AppActionTypes.ChangeAvatarSuccess:
             return {
                 ...state,
@@ -19,10 +15,6 @@ export const appReducer = (
                     avatarUrl: action.payload
                 }
             };
-
-        case AppActionTypes.ChangeAvatarFail:
-            console.log(action.payload);
-            return state;
 
         default:
             return state;

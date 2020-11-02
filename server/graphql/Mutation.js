@@ -4,23 +4,23 @@ const Message = require('../models/Message');
 const { authenticated } = require('../utils/gql-utils');
 const { MessageController } = require('../controllers/message.controller');
 const { UserController } = require('../controllers/user.controller');
-const { pubsub, EventTypes } = require('./Events');
+const { pubsub, Topics } = require('./Topics');
 
 const typeDefs = gql`
-  input CreateMessageInput {
+  input AddMessageInput {
     audienceId: ID
     type: MessageType!
     value: String!
   }
 
   type Mutation {
-    createMessage(input: CreateMessageInput!): Message
+    addMessage(input: AddMessageInput!): Message
     changeAvatar(avatarUrl: String!): String
   }
 `
 const resolvers = {
   Mutation: {
-    createMessage: authenticated(async (_, { input }, { currentUser }) => {
+    addMessage: authenticated(async (_, { input }, { currentUser }) => {
       const { audienceId, type, value } = input;
       return MessageController.createMessage({
         author: currentUser._id,
@@ -31,7 +31,7 @@ const resolvers = {
     }),
     changeAvatar: authenticated(async (_, { avatarUrl }, { currentUser }) => {
       const { user, audience } = await UserController.changeUserAvatar(currentUser._id, avatarUrl);
-      pubsub.publish(EventTypes.AudiencesChanged, { audiencesChanged: [audience] });
+      pubsub.publish(Topics.AudiencesChanged, { audiencesChanged: [audience] });
       return user.avatarUrl;
     })
   }
