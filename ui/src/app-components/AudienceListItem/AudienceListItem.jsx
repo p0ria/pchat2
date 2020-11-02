@@ -18,11 +18,13 @@ const itemVariants = {
     }
 }
 
-export default function AudienceListItem({ name, avatarUrl }) {
-    return (<motion.div className="AudienceListItem"
-        variants={itemVariants}
-    >
-        <img className="AudienceListItem-Avatar" src={avatarUrl} />
-        <span className="AudienceListItem-Title">{name}</span>
-    </motion.div>);
+export default function AudienceListItem({ name, avatarUrl, ...props }) {
+    return (
+        <motion.div className="AudienceListItem"
+            variants={itemVariants}
+            {...props}
+        >
+            <img className="AudienceListItem-Avatar" src={avatarUrl} />
+            <span className="AudienceListItem-Title">{name}</span>
+        </motion.div>);
 }

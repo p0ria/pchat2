@@ -1,4 +1,5 @@
 const { gql } = require("apollo-server");
+const { AudienceController } = require("../controllers/audience.controller");
 const { PrivateController } = require("../controllers/private.controller");
 const { UserController } = require("../controllers/user.controller");
 
@@ -28,6 +29,10 @@ const resolvers = {
         const other = await UserController.findUserById(otherId);
         return other.name;
       }
+    },
+    messages: async (payload) => {
+      const { messages } = await AudienceController.populate(payload, 'messages');
+      return messages;
     }
   }
 }

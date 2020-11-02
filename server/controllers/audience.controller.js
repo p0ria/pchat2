@@ -9,5 +9,8 @@ exports.AudienceController = {
     },
     findAudienceById: id => {
         return Audience.findById(id);
+    },
+    populate: (audience, ...relations) => {
+        return Audience.populate(audience, relations);
     }
 }

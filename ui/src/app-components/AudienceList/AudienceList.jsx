@@ -1,9 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectAudiences } from "../../state/audience/audience.selectors";
 import { motion } from "framer-motion";
 import AudienceListItem from "../AudienceListItem/AudienceListItem";
 import "./AudienceList.scss";
+import { actionSelectAudience } from "../../state/chat/chat.actions";
 
 const listVariants = {
     initial: {
@@ -20,6 +21,10 @@ const listVariants = {
 
 export default function AudienceList(props) {
     const audiences = useSelector(selectAudiences);
+    const dispatch = useDispatch();
+    const handleSelectAudience = audienceId => {
+        dispatch(actionSelectAudience(audienceId));
+    }
     if (!audiences.length) return '';
     return (<motion.div className="AudienceList"
         variants={listVariants}
@@ -31,6 +36,7 @@ export default function AudienceList(props) {
                 key={audience._id}
                 name={audience.name}
                 avatarUrl={audience.avatarUrl}
+                onClick={() => handleSelectAudience(audience._id)}
             />)
         }
     </motion.div>)

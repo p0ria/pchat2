@@ -23,3 +23,17 @@ export const AUDIENCES_QUERY = gql`
     }
   } 
 `
+
+export const AUDIENCE_QUERY = gql`
+  query($audienceId: ID!) {
+    audience(id: $audienceId) {
+      _id
+      name
+      type
+      avatarUrl
+      messages {
+        type
+      }
+    }
+  }
+`
