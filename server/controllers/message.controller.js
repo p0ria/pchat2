@@ -2,6 +2,9 @@ const Message = require("../models/Message")
 const Audience = require("../models/Audience")
 
 exports.MessageController = {
+  findMessageById: id => {
+    return Message.findById(id);
+  },
   createMessage: async message => {
     const newMessage = await new Message(message).save();
     const audience = await Audience.findById(newMessage.audience);

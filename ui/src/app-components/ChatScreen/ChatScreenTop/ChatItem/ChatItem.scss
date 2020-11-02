@@ -1,0 +1,28 @@
+@import '../../../../styles/sizes';
+.ChatItem {
+    margin: 10px 0;
+    display: flex;
+    width: 100%;
+
+    .ChartItem__baloon {
+        width: 60%;
+        color: white;
+        padding: 10px 15px;
+        word-wrap: break-word;
+    }
+
+    &.right {
+        .ChartItem__baloon {
+            background-color: skyblue;
+            border-radius: $radius $radius $radius 0;
+        }
+    }
+
+    &.left {
+        justify-content: flex-end;
+        .ChartItem__baloon {
+            background-color: gray;
+            border-radius: $radius $radius 0 $radius;
+        }
+    }
+}

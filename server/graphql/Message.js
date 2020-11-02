@@ -19,13 +19,16 @@ const typeDefs = gql`
 `
 const resolvers = {
   Message: {
-    audience: async (message) =>  {
-      const {audience} = await MessageController.populate(message, 'audience')
+    audience: async (message) => {
+      const { audience } = await MessageController.populate(message, 'audience')
       return audience;
     },
-    author: async(message) => {
-      const {author} = await MessageController.populate(message, 'author');
+    author: async (message) => {
+      const { author } = await MessageController.populate(message, 'author');
       return author;
+    },
+    value: (message) => {
+      return message.value ? Buffer.from(message.value).toString() : ''
     }
   }
 }

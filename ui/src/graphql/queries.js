@@ -32,7 +32,14 @@ export const AUDIENCE_QUERY = gql`
       type
       avatarUrl
       messages {
+        _id
+        author {
+          _id
+        }
         type
+        value
+        createdAt
+        updatedAt
       }
     }
   }

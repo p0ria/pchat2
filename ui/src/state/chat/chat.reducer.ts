@@ -7,6 +7,12 @@ export const chatReducer = (
     action: Action
 ): ChatState => {
     switch (action.type) {
+        case ChatActionTypes.SelectAudienceSuccess:
+            return {
+                ...state,
+                selectedAudience: action.payload
+            };
+
         default:
             return state;
     }

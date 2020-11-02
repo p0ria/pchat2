@@ -13,7 +13,7 @@ export default forwardRef(({ submit, onSubmitted = () => { }, ...props }, ref) =
                 type: 'TEXT',
                 value: Buffer.from(text).toString('base64')
             }
-            dispatch(actionSendMessage(payload));
+            dispatch(actionSendMessage(payload.audienceId, payload.type, payload.value));
             ref.current.value = '';
             onSubmitted();
         }

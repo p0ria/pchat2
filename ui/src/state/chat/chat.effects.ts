@@ -1,10 +1,10 @@
 import { ApolloClient } from "@apollo/client";
-import { call, getContext, select, takeEvery } from "redux-saga/effects";
+import { call, getContext, put, select, takeEvery } from "redux-saga/effects";
 import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 import { AUDIENCE_QUERY } from "../../graphql/queries";
 import { Action } from "../../interfaces/store.interface";
 import { selectToken } from "../login/login.selectors";
-import { ChatActionTypes } from "./chat.actions";
+import { actionSelectAudienceSuccess, ChatActionTypes } from "./chat.actions";
 
 export function* sendMessageSaga(action: Action) {
     try {
@@ -27,7 +27,7 @@ export function* getAudienceSaga(action: Action) {
             audienceId: action.payload
         }
         const { audience } = yield call(client.request.bind(client), AUDIENCE_QUERY, variables);
-        console.log(audience);
+        yield put(actionSelectAudienceSuccess(audience));
     } catch (error) {
         console.log(error);
     }
