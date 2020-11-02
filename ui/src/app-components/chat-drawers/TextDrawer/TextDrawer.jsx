@@ -3,17 +3,16 @@ import { useDispatch } from 'react-redux';
 import { actionSendMessage } from '../../../state/chat/chat.actions';
 import './TextDrawer.scss';
 
-export default forwardRef(({ submit, onSubmitted = () => { }, ...props }, ref) => {
+export default forwardRef(({ audienceId, submit, onSubmitted = () => { }, ...props }, ref) => {
     const dispatch = useDispatch();
     useEffect(() => {
-        if (submit) {
+        if (submit && audienceId) {
             const text = ref.current.value;
             const payload = {
-                audienceId: '5f885309114fb43b7c70ce2f',
                 type: 'TEXT',
                 value: Buffer.from(text).toString('base64')
             }
-            dispatch(actionSendMessage(payload.audienceId, payload.type, payload.value));
+            dispatch(actionSendMessage(audienceId, payload.type, payload.value));
             ref.current.value = '';
             onSubmitted();
         }

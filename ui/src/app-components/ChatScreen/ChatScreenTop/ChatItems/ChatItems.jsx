@@ -9,11 +9,10 @@ export default function ChatItems() {
     return (
         <div className="ChatItems">
             {audience &&
-                audience.messages.map(m => (
+                audience.messages.map(message => (
                     <ChatItem
-                        text={m.value}
-                        isOwner={Math.random() > .5}
-                        key={m._id}
+                        message={message}
+                        key={message._id}
                     />
                 ))
             }

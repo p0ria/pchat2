@@ -5,23 +5,23 @@
     width: 100%;
 
     .ChartItem__baloon {
-        width: 60%;
-        color: white;
+        max-width: 60%;
         padding: 10px 15px;
-        word-wrap: break-word;
+        color: #f0f0f0;
     }
 
     &.right {
+        justify-content: flex-end;
         .ChartItem__baloon {
-            background-color: skyblue;
+            background-color: #9ba4b4;
             border-radius: $radius $radius $radius 0;
         }
     }
 
     &.left {
-        justify-content: flex-end;
+        justify-content: flex-start;
         .ChartItem__baloon {
-            background-color: gray;
+            background-color: #595b83;
             border-radius: $radius $radius 0 $radius;
         }
     }

@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectSelectedAudience } from '../../../../state/chat/chat.selectors';
 import TextDrawer from '../../../chat-drawers/TextDrawer/TextDrawer';
 import './ChatInput.scss';
 
-export default function ChatInput({ children = null }) {
+export default function ChatInput({ audienceId, children = null }) {
     const inputRef = useRef();
     const drawerRef = useRef();
     const sendRef = useRef();
@@ -35,6 +37,7 @@ export default function ChatInput({ children = null }) {
     return (
         <div className="ChatInput">
             <TextDrawer
+                audienceId={audienceId}
                 ref={inputRef}
                 submit={textSubmit}
                 onSubmitted={handleSubmitted} />
