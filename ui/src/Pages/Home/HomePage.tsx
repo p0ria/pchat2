@@ -8,6 +8,7 @@ import { createWsClient } from '../../services/client';
 import { AUDIENCES_CHANGED_SUBSCRIPTION } from '../../graphql/subscriptions';
 import { AUDIENCES_QUERY, ME_QUERY } from '../../graphql/queries';
 import { actionSubscribeToWS } from '../../state/app/app.actions';
+import ChatScreen from '../../app-components/ChatScreen/ChatScreen';
 
 export default () => {
   const dispatch = useDispatch();
@@ -19,9 +20,7 @@ export default () => {
   return (
     <div className="HomePage">
       <Sidebar />
-      <div className="HomePage-Right">
-
-      </div>
+      <ChatScreen />
     </div>
   )
 }

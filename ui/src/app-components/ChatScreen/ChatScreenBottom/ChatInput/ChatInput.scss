@@ -1,0 +1,43 @@
+@import '../../../../styles/sizes';
+
+.ChatInput {
+    display: flex;
+    flex-flow: row nowrap;
+    position: relative;
+    border-radius: $radius;
+
+    .TextDrawer {
+        flex: 1;
+    }
+
+    .ChatInput__send-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40px;
+        min-height: $chat-input-min-height;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: rgba(var(--color-primary-dark), 1);
+        user-select: none;
+    }
+
+    .ChatInput__drawer {
+        position: absolute;
+        left: 0;
+        right: $chat-input-right-pad;
+        top: 0;
+        width: auto;
+        height: auto;
+        min-height: $chat-input-min-height;
+        background-color: cadetblue;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: inherit;
+    }
+}

@@ -1,0 +1,15 @@
+.ChatScreen {
+    width: 100%;
+    height: 100%;
+    background-color: #444;
+    display: flex;
+    flex-direction: column;
+
+    .ChatScreenTop {
+        flex: 1;
+    }
+
+    .ChatScreenBottom {
+        flex: 0 0 auto;
+    }
+}

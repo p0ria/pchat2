@@ -1,0 +1,15 @@
+.ChatScreenBottom {
+    width: 100%;
+    display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    background-color: #ccc;
+
+    .ChatInput {
+        flex: 1;
+    }
+
+    .ChatExtras {
+        flex: 0 0 auto;
+    }
+}
