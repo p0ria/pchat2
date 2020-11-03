@@ -32,6 +32,7 @@ export const AUDIENCE_QUERY = gql`
         _id
         author {
           _id
+          avatarUrl
         }
         type
         value

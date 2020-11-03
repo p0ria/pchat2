@@ -17,6 +17,7 @@ subscription {
         _id
         author {
             _id
+            avatarUrl
         }
         type
         value

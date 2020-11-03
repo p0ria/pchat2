@@ -17,6 +17,10 @@ export default function ChatItem({ message }) {
     }, [message]);
     return (
         <div className={`ChatItem ${isOwner ? 'right' : 'left'}`}>
+            {
+                !isOwner &&
+                <img className="ChartItem__avatar" src={message.author.avatarUrl} />
+            }
             <div className="ChartItem__baloon">
                 {renderChatComponent()}
             </div>

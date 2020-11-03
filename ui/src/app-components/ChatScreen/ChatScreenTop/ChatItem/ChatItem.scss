@@ -3,6 +3,16 @@
     margin: 10px 0;
     display: flex;
     width: 100%;
+    align-items: center;
+
+    .ChartItem__avatar {
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+        border-radius: 50%;
+        background-image: radial-gradient(rgba(#fff, .8) 40%, transparent);
+        margin-right: 5px;
+    }
 
     .ChartItem__baloon {
         max-width: 60%;
