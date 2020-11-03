@@ -1,6 +1,9 @@
 import App from "../../App"
 
 export const AppActionTypes = {
+    GetProfile: '[APP] Get Profile',
+    GetProfileSuccess: '[APP] Get Profile Success',
+    GetProfileFail: '[APP] Get Profile Fail',
     SubscribeToWS: '[APP] Subscribe To WS',
     SubscribeToWSFail: '[APP] Subscribe To WS Fail',
     AppReconnected: '[APP] App Reconnected',
@@ -8,6 +11,20 @@ export const AppActionTypes = {
     ChangeAvatarSuccess: '[APP] Change Avatar Success',
     ChangeAvatarFail: '[APP] Change Avatar Fail'
 }
+
+export const actionGetProfile = () => ({
+    type: AppActionTypes.GetProfile
+})
+
+export const actionGetProfileSuccess = user => ({
+    type: AppActionTypes.GetProfileSuccess,
+    payload: user
+})
+
+export const actionGetProfileFail = error => ({
+    type: AppActionTypes.GetProfileFail,
+    payload: error
+})
 
 export const actionSubscribeToWS = dispatch => ({
     type: AppActionTypes.SubscribeToWS,

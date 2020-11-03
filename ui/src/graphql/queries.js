@@ -6,9 +6,6 @@ export const ME_QUERY = gql`
       _id
       name
       email
-      audiences {
-        _id
-      }
     }
   }
 `;

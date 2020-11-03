@@ -7,6 +7,12 @@ export const appReducer = (
     action: Action
 ): AppState => {
     switch (action.type) {
+        case AppActionTypes.GetProfileSuccess:
+            return {
+                ...state,
+                user: action.payload
+            };
+
         case AppActionTypes.ChangeAvatarSuccess:
             return {
                 ...state,

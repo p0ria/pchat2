@@ -12,7 +12,6 @@ export function* sendMessageSaga(action: Action) {
         const client = yield getContext('client');
         client.setHeader('authorization', token);
         const { addMessage } = yield call(client.request.bind(client), ADD_MESSAGE_MUTATION, action.payload);
-        console.log(atob(addMessage.value));
     } catch (error) {
 
     }
