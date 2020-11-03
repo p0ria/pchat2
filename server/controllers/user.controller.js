@@ -34,8 +34,6 @@ exports.UserController = {
         break;
       }
     }
-    audience.avatarUrl = avatarUrl;
-    await audience.save();
     return { user, audience };
   },
   populate: async (user, ...relations) => {

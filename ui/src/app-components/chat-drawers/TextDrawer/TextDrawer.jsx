@@ -8,13 +8,15 @@ export default forwardRef(({ audienceId, submit, onSubmitted = () => { }, ...pro
     useEffect(() => {
         if (submit && audienceId) {
             const text = ref.current.value;
-            const payload = {
-                type: 'TEXT',
-                value: Buffer.from(text).toString('base64')
+            if (text) {
+                const payload = {
+                    type: 'TEXT',
+                    value: Buffer.from(text).toString('base64')
+                }
+                dispatch(actionSendMessage(audienceId, payload.type, payload.value));
+                ref.current.value = '';
+                onSubmitted();
             }
-            dispatch(actionSendMessage(audienceId, payload.type, payload.value));
-            ref.current.value = '';
-            onSubmitted();
         }
     }, [submit]);
 

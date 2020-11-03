@@ -18,9 +18,9 @@ const typeDefs = gql`
 `
 const resolvers = {
   Audience: {
-    name: async (parent, _, { currentUser }) => {
-      if (parent.type == 'PRIVATE') {
-        const private = await PrivateController.findPrivateById(parent._id);
+    name: async (payload, _, { currentUser }) => {
+      if (payload.type == 'PRIVATE') {
+        const private = await PrivateController.findPrivateById(payload._id);
         if (String(private.user1) === String(private.user2)) {
           return 'Saved Messages';
         }
@@ -28,6 +28,19 @@ const resolvers = {
           private.user2 : private.user1;
         const other = await UserController.findUserById(otherId);
         return other.name;
+      }
+    },
+    avatarUrl: async (payload, _, { currentUser }) => {
+      if (payload.type == 'PRIVATE') {
+        const private = await PrivateController.findPrivateById(payload._id);
+        if (String(private.user1) === String(private.user2)) {
+          const user = await UserController.findUserById(private.user1);
+          return user.avatarUrl;
+        }
+        const otherId = String(currentUser._id) === String(private.user1) ?
+          private.user2 : private.user1;
+        const other = await UserController.findUserById(otherId);
+        return other.avatarUrl;
       }
     },
     messages: async (payload) => {

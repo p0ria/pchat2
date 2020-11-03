@@ -1,7 +1,8 @@
 export const ChatActionTypes = {
     SendMessage: '[CHAT] Send Message',
     SelectAudience: '[CHAT] Select Audience',
-    SelectAudienceSuccess: '[CHAT] Select Audience Success'
+    SelectAudienceSuccess: '[CHAT] Select Audience Success',
+    MessageAdded: '[CHAT] Message Added'
 }
 
 export const actionSendMessage = (audienceId, type, value) => ({
@@ -17,4 +18,9 @@ export const actionSelectAudience = audienceId => ({
 export const actionSelectAudienceSuccess = audience => ({
     type: ChatActionTypes.SelectAudienceSuccess,
     payload: audience
+})
+
+export const actionMessageAdded = message => ({
+    type: ChatActionTypes.MessageAdded,
+    payload: message
 })

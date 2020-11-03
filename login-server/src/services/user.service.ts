@@ -18,7 +18,7 @@ export class UserService {
   async createUser(email: string, name: string): Promise<User> {
     const user = await this.userModel.create({ email, name, avatarUrl: 'https://i.imgur.com/PW0UW6Z.png', audiences: [] });
     const audience = await this.audienceModel.create(
-      { type: 'PRIVATE', avatarUrl: user.avatarUrl, messages: [] });
+      { type: 'PRIVATE', messages: [] });
     this.privateModel.create({
       _id: audience._id,
       user1: user._id,

@@ -22,12 +22,14 @@ const resolvers = {
   Mutation: {
     addMessage: authenticated(async (_, { input }, { currentUser }) => {
       const { audienceId, type, value } = input;
-      return MessageController.createMessage({
+      const message = await MessageController.createMessage({
         author: currentUser._id,
         audience: audienceId,
         type,
         value
       });
+      pubsub.publish(Topics.MessageAdded, { messageAdded: message });
+      return message;
     }),
     changeAvatar: authenticated(async (_, { avatarUrl }, { currentUser }) => {
       const { user, audience } = await UserController.changeUserAvatar(currentUser._id, avatarUrl);

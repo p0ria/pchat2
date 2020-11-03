@@ -10,3 +10,21 @@ subscription {
     }
 }
 `
+
+export const MESSAGE_ADDED_SUBSCRIPTION = gql`
+subscription {
+    messageAdded {
+        _id
+        author {
+            _id
+        }
+        type
+        value
+        audience {
+            _id
+        }
+        createdAt
+        updatedAt
+    }
+}
+`

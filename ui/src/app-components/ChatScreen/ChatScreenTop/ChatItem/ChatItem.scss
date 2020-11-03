@@ -14,7 +14,7 @@
         justify-content: flex-end;
         .ChartItem__baloon {
             background-color: #9ba4b4;
-            border-radius: $radius $radius $radius 0;
+            border-radius: $radius $radius 0 $radius;
         }
     }
 
@@ -22,7 +22,7 @@
         justify-content: flex-start;
         .ChartItem__baloon {
             background-color: #595b83;
-            border-radius: $radius $radius 0 $radius;
+            border-radius: 0 $radius $radius $radius;
         }
     }
 }

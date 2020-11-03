@@ -13,6 +13,23 @@ export const chatReducer = (
                 selectedAudience: action.payload
             };
 
+        case ChatActionTypes.MessageAdded:
+            if (state.selectedAudience &&
+                String(action.payload.audience._id) === String(state.selectedAudience._id)) {
+                return {
+                    ...state,
+                    selectedAudience: {
+                        ...state.selectedAudience,
+                        messages: [
+                            ...state.selectedAudience.messages,
+                            action.payload
+                        ]
+                    }
+                }
+            } else {
+                return state;
+            }
+
         default:
             return state;
     }

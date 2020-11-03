@@ -3,5 +3,5 @@ export interface Audience {
   type: string
   name: string
   avatarUrl: string
-  messages: []
+  messages: any[]
 }
