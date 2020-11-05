@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import useUploadImage from '../../../../../hooks/useUploadImage';
+import { actionSendMessage } from '../../../../../state/chat/chat.actions';
 import ImageDrawer from '../../../../chat-drawers/ImageDrawer/ImageDrawer';
 import './ImageChatExtra.scss';
 
@@ -7,6 +9,7 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, submi
     const [urls, setUrls] = useState([]);
     const [url, uploading, setFile] = useUploadImage();
     const ref = useRef();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (url) {
@@ -23,13 +26,19 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, submi
     }, [urls])
 
     useEffect(() => {
-        if (submit) {
-            alert(urls);
+        if (submit && audienceId) {
+            if (urls && urls.length > 0) {
+                const payload = {
+                    type: 'IMAGE',
+                    value: Buffer.from(urls[0]).toString('base64')
+                }
+                dispatch(actionSendMessage(audienceId, payload.type, payload.value));
 
-            setFile(null);
-            ref.current.value = null;
-            setUrls(null);
-            onSubmitted();
+                setFile(null);
+                setUrls(null);
+                onSubmitted();
+            }
+
         }
     }, [submit])
 

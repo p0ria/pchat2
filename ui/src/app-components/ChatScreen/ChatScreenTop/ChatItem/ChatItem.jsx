@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../state/app/app.selectors';
+import ImageChat from '../../../chat-items/ImageChat/ImageChat';
 import TextChat from '../../../chat-items/TextChat/TextChat';
+import ImageChatExtra from '../../ChatScreenBottom/ChatExtras/ImageChatExtra/ImageChatExtra';
 import './ChatItem.scss';
 
 export default function ChatItem({ message }) {
@@ -11,8 +13,12 @@ export default function ChatItem({ message }) {
         switch (message.type) {
             case 'TEXT':
                 return <TextChat text={message.value} />
+
+            case 'IMAGE':
+                return <ImageChat imageUrl={message.value} />
+
             default:
-                return null;
+                return 'UNKNOWN MESSAGE TYPE';
         }
     }, [message]);
     return (
