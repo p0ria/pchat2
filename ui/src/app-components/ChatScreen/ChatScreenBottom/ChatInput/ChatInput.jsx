@@ -4,12 +4,11 @@ import { selectSelectedAudience } from '../../../../state/chat/chat.selectors';
 import TextDrawer from '../../../chat-drawers/TextDrawer/TextDrawer';
 import './ChatInput.scss';
 
-export default function ChatInput({ audienceId, children = null }) {
+export default function ChatInput({ audienceId, setDrawerSubmit, children = null }) {
     const inputRef = useRef();
     const drawerRef = useRef();
     const sendRef = useRef();
     const [textSubmit, setTextSubmit] = useState();
-    const [drawerSubmit, setDrawerSubmit] = useState();
 
     useEffect(() => {
         new ResizeObserver(() => {

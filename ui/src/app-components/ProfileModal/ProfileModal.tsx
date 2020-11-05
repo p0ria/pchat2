@@ -1,43 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-awesome-modal';
 import Button, { ButtonKind } from '../../components/Button/Button';
 import './ProfileModal.scss';
-import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { actionChangeAvatar } from '../../state/app/app.actions';
 import Spinner from 'react-spinner';
+import useUploadImage from '../../hooks/useUploadImage';
 
 export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props }) {
     const [avatarUrl, setAvatarUrl] = useState();
-    const [isUploading, setIsUploading] = useState(false);
+    const [url, uploading, setFile] = useUploadImage();
     const dispatcher = useDispatch();
+
+    useEffect(() => {
+        setAvatarUrl(url as any);
+    }, [url])
 
     const handleFileUpload = async (files: FileList | null | undefined) => {
         if (!files) return;
-        setIsUploading(true);
         var selectedFile = files[0];
-        var fd = new FormData();
-        fd.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET as string);
-        fd.append('file', selectedFile);
-        try {
-            const { status, data } = await axios({
-                method: 'post',
-                url: `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                data: fd,
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
-            if (status == 200) {
-                setAvatarUrl(data.url);
-            }
-            else {
-                setAvatarUrl(null);
-            }
-        } catch (error) {
-            console.log(error);
-            setAvatarUrl(null);
-        } finally {
-            setIsUploading(false);
-        }
+        setFile(selectedFile);
     }
     const handleDragEnter = e => {
         e.stopPropagation();
@@ -74,7 +56,7 @@ export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props
                     <span>Change Profile Picture</span>
                 </div>
                 {
-                    isUploading ?
+                    uploading ?
                         <div className="ProfileModal-Spinner"><Spinner /></div>
                         :
                         <>

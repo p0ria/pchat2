@@ -1,0 +1,12 @@
+@import '../../../styles/sizes';
+
+.ImageDrawer {
+    margin-bottom: -4px;
+    display: flex;
+    flex-flow: row-reverse wrap;
+
+    img {
+        border-radius: $radius;
+        margin: 5px 0 5px 5px;
+    }
+}
