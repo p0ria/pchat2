@@ -1,12 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionSubmitChatDrawer } from '../../../../state/chat/chat.actions';
+import { selectActiveDrawer } from '../../../../state/chat/chat.selectors';
 import TextDrawer from '../../../chat-drawers/TextDrawer/TextDrawer';
 import './ChatInput.scss';
 
-export default function ChatInput({ audienceId, drawerSubmit = () => { }, children = null }) {
+export default function ChatInput({ audienceId }) {
     const inputRef = useRef();
     const drawerRef = useRef();
     const sendRef = useRef();
     const [textSubmit, setTextSubmit] = useState();
+    const dispatch = useDispatch();
+    const activeDrawer = useSelector(selectActiveDrawer);
+    const children = activeDrawer && activeDrawer.children;
 
     useEffect(() => {
         new ResizeObserver(() => {
@@ -19,7 +25,7 @@ export default function ChatInput({ audienceId, drawerSubmit = () => { }, childr
     const handleSend = useCallback(() => {
         if (children) {
             // send drawer data
-            drawerSubmit();
+            dispatch(actionSubmitChatDrawer());
         } else {
             setTextSubmit(true);
         }

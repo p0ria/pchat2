@@ -12,3 +12,8 @@ export const selectSelectedAudienceMessages = createSelector(
     selectSelectedAudience,
     audience => (audience && audience.messages) || []
 )
+
+export const selectActiveDrawer = createSelector(
+    selectChatState,
+    state => state.activeDrawer
+)

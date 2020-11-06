@@ -1,23 +1,24 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useUploadImages from '../../../../../hooks/useUploadImages';
-import { actionSendMessage } from '../../../../../state/chat/chat.actions';
+import { actionActivateChatDrawer, actionRemoveChatDrawer, actionSendMessage } from '../../../../../state/chat/chat.actions';
 import ImageDrawer from '../../../../chat-drawers/ImageDrawer/ImageDrawer';
 import './ImageChatExtra.scss';
 
-export default function ImageChatExtra({ audienceId, activate = () => { }, passedInRef }) {
+export default function ImageChatExtra() {
     const [urls, setUrls] = useState([]);
     const [imageUrls, uploading, setFiles] = useUploadImages();
+    const ref = useRef();
     const textInputRef = useRef();
     const dispatch = useDispatch();
 
-    const clearFields = () => {
+    const clear = () => {
         setFiles(null);
         setUrls([]);
         textInputRef.current.value = null;
     }
 
-    const submit = () => {
+    const submit = audienceId => {
         if (audienceId) {
             if (urls && urls.length > 0) {
                 const payload = {
@@ -27,16 +28,13 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, passe
                     }
                 }
                 dispatch(actionSendMessage(audienceId, payload.type, payload.value));
-
-                clearFields();
             }
-
         }
     }
 
-    useImperativeHandle(passedInRef, () => ({
-        clear: () => { clearFields(); },
-        submit: () => { submit(); }
+    useImperativeHandle(ref, () => ({
+        clear,
+        submit
     }));
 
     useEffect(() => {
@@ -47,9 +45,9 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, passe
 
     useEffect(() => {
         if (urls && urls.length > 0) {
-            activate(<ImageDrawer imageUrls={urls} />);
+            dispatch(actionActivateChatDrawer(ref, <ImageDrawer imageUrls={urls} />))
         } else {
-            activate(null);
+            dispatch(actionRemoveChatDrawer());
         }
     }, [urls])
 

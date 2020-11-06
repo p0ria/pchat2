@@ -1,9 +1,9 @@
 import React from 'react';
 import './ImageChat.scss';
 
-export default function ImageChat({ message }) {
+export default function ImageChat({ isOwner, message }) {
     return (
-        <div className="ImageChat">
+        <div className={`ImageChat ${isOwner ? 'right' : 'left'}`}>
             {
                 message.urls.map(url => (
                     <img

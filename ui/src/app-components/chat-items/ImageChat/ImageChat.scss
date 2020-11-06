@@ -1,9 +1,15 @@
+@import '../../../styles/sizes';
+
 .ImageChat {
     margin: -5px;
     display: flex;
     flex-flow: row-reverse wrap;
-    
+    &.left {
+        flex-flow: row wrap;
+    }
+
     img {
         margin: 5px;
+        border-radius: $radius;
     }
 }

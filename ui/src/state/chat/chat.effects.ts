@@ -4,7 +4,8 @@ import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 import { AUDIENCE_QUERY } from "../../graphql/queries";
 import { Action } from "../../interfaces/store.interface";
 import { selectToken } from "../login/login.selectors";
-import { actionSelectAudienceSuccess, ChatActionTypes } from "./chat.actions";
+import { actionRemoveChatDrawer, actionRemoveChatDrawerSuccess, actionSelectAudienceSuccess, actionSubmitChatDrawerFail, actionSubmitChatDrawerSuccess, ChatActionTypes } from "./chat.actions";
+import { selectActiveDrawer, selectSelectedAudience } from "./chat.selectors";
 
 export function* sendMessageSaga(action: Action) {
     try {
@@ -33,7 +34,35 @@ export function* getAudienceSaga(action: Action) {
     }
 }
 
+export function* removeChatDrawerSaga(action: Action) {
+    try {
+        const activeDrawer = yield select(selectActiveDrawer);
+        if (activeDrawer && activeDrawer.drawer.current && activeDrawer.drawer.current.clear) {
+            activeDrawer.drawer.current.clear();
+        }
+        yield put(actionRemoveChatDrawerSuccess());
+    } catch (error) {
+
+    }
+}
+
+export function* submitChatDrawerSaga(action: Action) {
+    try {
+        const audience = yield select(selectSelectedAudience);
+        const activeDrawer = yield select(selectActiveDrawer);
+        if (audience && activeDrawer && activeDrawer.drawer.current && activeDrawer.drawer.current.submit) {
+            yield call(activeDrawer.drawer.current.submit, audience._id);
+            yield put(actionSubmitChatDrawerSuccess());
+            yield put(actionRemoveChatDrawer());
+        }
+    } catch (error) {
+        yield put(actionSubmitChatDrawerFail(error));
+    }
+}
+
 export const chatSagas = [
     takeEvery(ChatActionTypes.SendMessage, sendMessageSaga),
-    takeEvery(ChatActionTypes.SelectAudience, getAudienceSaga)
+    takeEvery(ChatActionTypes.SelectAudience, getAudienceSaga),
+    takeEvery(ChatActionTypes.RemoveChatDrawer, removeChatDrawerSaga),
+    takeEvery(ChatActionTypes.SubmitChatDrawer, submitChatDrawerSaga)
 ];

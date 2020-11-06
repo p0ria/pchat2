@@ -30,6 +30,25 @@ export const chatReducer = (
                 return state;
             }
 
+        case ChatActionTypes.ActivateChatDrawer:
+            return {
+                ...state,
+                activeDrawer: {
+                    drawer: action.payload.drawerRef,
+                    children: action.payload.children
+                }
+            }
+
+        case ChatActionTypes.RemoveChatDrawerSuccess:
+            return {
+                ...state,
+                activeDrawer: null
+            }
+
+        case ChatActionTypes.SubmitChatDrawerFail:
+            console.error('Submit Chat Failed', action.payload);
+            return state;
+
         default:
             return state;
     }
