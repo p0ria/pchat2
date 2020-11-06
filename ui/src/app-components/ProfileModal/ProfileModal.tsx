@@ -5,21 +5,21 @@ import './ProfileModal.scss';
 import { useDispatch } from 'react-redux';
 import { actionChangeAvatar } from '../../state/app/app.actions';
 import Spinner from 'react-spinner';
-import useUploadImage from '../../hooks/useUploadImage';
+import useUploadImages from '../../hooks/useUploadImages';
+import { FieldsOnCorrectTypeRule } from 'graphql';
 
 export default function ProfileModal({ isOpen, onClickAway = () => { }, ...props }) {
     const [avatarUrl, setAvatarUrl] = useState();
-    const [url, uploading, setFile] = useUploadImage();
+    const [urls, uploading, setFiles] = useUploadImages();
     const dispatcher = useDispatch();
 
     useEffect(() => {
-        setAvatarUrl(url as any);
-    }, [url])
+        setAvatarUrl(urls[0] as any);
+    }, [urls])
 
     const handleFileUpload = async (files: FileList | null | undefined) => {
         if (!files) return;
-        var selectedFile = files[0];
-        setFile(selectedFile);
+        setFiles(files);
     }
     const handleDragEnter = e => {
         e.stopPropagation();

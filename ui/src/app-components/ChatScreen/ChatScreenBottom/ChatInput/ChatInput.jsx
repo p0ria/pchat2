@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectSelectedAudience } from '../../../../state/chat/chat.selectors';
 import TextDrawer from '../../../chat-drawers/TextDrawer/TextDrawer';
 import './ChatInput.scss';
 
-export default function ChatInput({ audienceId, setDrawerSubmit, children = null }) {
+export default function ChatInput({ audienceId, drawerSubmit = () => { }, children = null }) {
     const inputRef = useRef();
     const drawerRef = useRef();
     const sendRef = useRef();
@@ -21,7 +19,7 @@ export default function ChatInput({ audienceId, setDrawerSubmit, children = null
     const handleSend = useCallback(() => {
         if (children) {
             // send drawer data
-            setDrawerSubmit(true);
+            drawerSubmit();
         } else {
             setTextSubmit(true);
         }
@@ -29,7 +27,6 @@ export default function ChatInput({ audienceId, setDrawerSubmit, children = null
 
     const handleSubmitted = useCallback(() => {
         setTextSubmit(false);
-        setDrawerSubmit(false);
         inputRef.current.focus();
     });
 

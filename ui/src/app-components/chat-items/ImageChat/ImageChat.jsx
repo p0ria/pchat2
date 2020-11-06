@@ -7,6 +7,7 @@ export default function ImageChat({ message }) {
             {
                 message.urls.map(url => (
                     <img
+                        key={url}
                         src={url}
                         width="100"
                         height="100" />

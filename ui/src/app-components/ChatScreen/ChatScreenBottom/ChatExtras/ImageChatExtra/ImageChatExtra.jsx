@@ -1,32 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import useUploadImage from '../../../../../hooks/useUploadImage';
+import useUploadImages from '../../../../../hooks/useUploadImages';
 import { actionSendMessage } from '../../../../../state/chat/chat.actions';
 import ImageDrawer from '../../../../chat-drawers/ImageDrawer/ImageDrawer';
 import './ImageChatExtra.scss';
 
-export default function ImageChatExtra({ audienceId, activate = () => { }, submit, onSubmitted = () => { } }) {
+export default function ImageChatExtra({ audienceId, activate = () => { }, passedInRef }) {
     const [urls, setUrls] = useState([]);
-    const [url, uploading, setFile] = useUploadImage();
-    const ref = useRef();
+    const [imageUrls, uploading, setFiles] = useUploadImages();
+    const textInputRef = useRef();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (url) {
-            setUrls([...urls, url]);
-        }
-    }, [url])
+    const clearFields = () => {
+        setFiles(null);
+        setUrls([]);
+        textInputRef.current.value = null;
+    }
 
-    useEffect(() => {
-        if (urls && urls.length > 0) {
-            activate(<ImageDrawer imageUrls={urls} />);
-        } else {
-            activate(null);
-        }
-    }, [urls])
-
-    useEffect(() => {
-        if (submit && audienceId) {
+    const submit = () => {
+        if (audienceId) {
             if (urls && urls.length > 0) {
                 const payload = {
                     type: 'IMAGE',
@@ -36,18 +28,34 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, submi
                 }
                 dispatch(actionSendMessage(audienceId, payload.type, payload.value));
 
-                setFile(null);
-                setUrls([]);
-                onSubmitted();
+                clearFields();
             }
 
         }
-    }, [submit])
+    }
+
+    useImperativeHandle(passedInRef, () => ({
+        clear: () => { clearFields(); },
+        submit: () => { submit(); }
+    }));
+
+    useEffect(() => {
+        if (imageUrls) {
+            setUrls([...urls, ...imageUrls]);
+        }
+    }, [imageUrls])
+
+    useEffect(() => {
+        if (urls && urls.length > 0) {
+            activate(<ImageDrawer imageUrls={urls} />);
+        } else {
+            activate(null);
+        }
+    }, [urls])
 
     const handleFileUpload = async (files) => {
         if (!files) return;
-        var selectedFile = files[0];
-        setFile(selectedFile);
+        setFiles(files);
     }
 
     return (
@@ -61,7 +69,8 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, submi
                 id="imageInputFile"
                 type="file"
                 accept="image/png, image/jpeg"
-                ref={ref}
+                multiple={true}
+                ref={textInputRef}
                 onChange={e => handleFileUpload(e.target.files)} />
         </div>
     )

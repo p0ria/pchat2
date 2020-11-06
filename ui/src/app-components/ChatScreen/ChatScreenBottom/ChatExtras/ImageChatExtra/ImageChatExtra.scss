@@ -1,5 +1,10 @@
 .ImageChatExtra {
+    user-select: none;
     cursor: pointer;
+
+    label {
+        cursor: inherit;
+    }
 
     input[type=file] {
         display: none;

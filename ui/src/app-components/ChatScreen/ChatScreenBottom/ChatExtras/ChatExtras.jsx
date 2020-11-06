@@ -1,32 +1,47 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import './ChatExtras.scss';
 import ImageChatExtra from './ImageChatExtra/ImageChatExtra';
 
-export default function ChatExtras({ audienceId, setChildren, submit }) {
-    let activatedExtraId;
+let activatedExtraId;
+export default function ChatExtras({ audienceId, setChildren, passedInRef }) {
+    const refs = [useRef()];
+
+    useImperativeHandle(passedInRef, () => ({
+        submit: () => { submit(); }
+    }))
+
     const activateExtra = (extraId, children) => {
         activatedExtraId = extraId;
         setChildren(children);
     }
+
     const handleSubmitted = () => {
         activatedExtraId = null;
         setChildren(null);
     }
 
-    useEffect(() => {
-        if (submit) {
-
+    const submit = () => {
+        const activatedRef = refs[activatedExtraId];
+        if (activatedRef.current && activatedRef.current.submit) {
+            activatedRef.current.submit();
+            handleSubmitted();
         }
-    }, [submit])
+    }
+
+    useEffect(() => {
+        const activatedRef = refs[activatedExtraId];
+        if (activatedRef.current && activatedRef.current.clear) {
+            activatedRef.current.clear();
+        }
+    }, [audienceId])
 
     return (
         <div className="ChatExtras">
             <i className="material-icons">mic</i>
             <ImageChatExtra
                 audienceId={audienceId}
-                activate={(children) => activateExtra(2, children)}
-                submit={submit}
-                onSubmitted={handleSubmitted} />
+                activate={(children) => activateExtra(0, children)}
+                passedInRef={refs[0]} />
             <i className="material-icons">more_vert</i>
         </div>
     )

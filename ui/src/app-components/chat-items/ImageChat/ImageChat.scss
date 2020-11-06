@@ -1,9 +1,9 @@
 .ImageChat {
-    margin-bottom: -4px;
+    margin: -5px;
     display: flex;
     flex-flow: row-reverse wrap;
     
-    img:not(:last-child) {
-        margin-left: 10px;
+    img {
+        margin: 5px;
     }
 }
