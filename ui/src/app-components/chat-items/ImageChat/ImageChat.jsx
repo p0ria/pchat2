@@ -1,13 +1,17 @@
 import React from 'react';
 import './ImageChat.scss';
 
-export default function ImageChat({ imageUrl }) {
+export default function ImageChat({ message }) {
     return (
         <div className="ImageChat">
-            <img
-                src={imageUrl}
-                width="100"
-                height="100" />
+            {
+                message.urls.map(url => (
+                    <img
+                        src={url}
+                        width="100"
+                        height="100" />
+                ))
+            }
         </div>
     )
 }

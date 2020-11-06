@@ -26,7 +26,7 @@ export function* getAudienceSaga(action: Action) {
             audienceId: action.payload
         }
         const { audience } = yield call(client.request.bind(client), AUDIENCE_QUERY, variables);
-        audience.messages.forEach(m => m.value = atob(m.value));
+        audience.messages.forEach(m => m.value = JSON.parse(m.value));
         yield put(actionSelectAudienceSuccess(audience));
     } catch (error) {
         console.log(error);

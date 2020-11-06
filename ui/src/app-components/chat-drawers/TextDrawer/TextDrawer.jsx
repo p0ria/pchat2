@@ -11,7 +11,9 @@ export default forwardRef(({ audienceId, submit, onSubmitted = () => { }, ...pro
             if (text) {
                 const payload = {
                     type: 'TEXT',
-                    value: Buffer.from(text).toString('base64')
+                    value: {
+                        text
+                    }
                 }
                 dispatch(actionSendMessage(audienceId, payload.type, payload.value));
                 ref.current.value = '';

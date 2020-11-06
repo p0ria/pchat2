@@ -12,10 +12,10 @@ export default function ChatItem({ message }) {
     const renderChatComponent = useCallback(() => {
         switch (message.type) {
             case 'TEXT':
-                return <TextChat text={message.value} />
+                return <TextChat message={message.value} />
 
             case 'IMAGE':
-                return <ImageChat imageUrl={message.value} />
+                return <ImageChat message={message.value} />
 
             default:
                 return 'UNKNOWN MESSAGE TYPE';

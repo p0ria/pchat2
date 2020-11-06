@@ -30,12 +30,14 @@ export default function ImageChatExtra({ audienceId, activate = () => { }, submi
             if (urls && urls.length > 0) {
                 const payload = {
                     type: 'IMAGE',
-                    value: Buffer.from(urls[0]).toString('base64')
+                    value: {
+                        urls
+                    }
                 }
                 dispatch(actionSendMessage(audienceId, payload.type, payload.value));
 
                 setFile(null);
-                setUrls(null);
+                setUrls([]);
                 onSubmitted();
             }
 

@@ -27,7 +27,7 @@ function subscribeToMessageAdded(wsClient, dispatch) {
         next({ data }) {
             const messageAdded = {
                 ...data.messageAdded,
-                value: atob(data.messageAdded.value)
+                value: JSON.parse(data.messageAdded.value)
             }
             dispatch(actionMessageAdded(messageAdded));
         }

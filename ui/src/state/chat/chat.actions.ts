@@ -7,7 +7,7 @@ export const ChatActionTypes = {
 
 export const actionSendMessage = (audienceId, type, value) => ({
     type: ChatActionTypes.SendMessage,
-    payload: { audienceId, type, value }
+    payload: { audienceId, type, value: JSON.stringify(value) }
 })
 
 export const actionSelectAudience = audienceId => ({
