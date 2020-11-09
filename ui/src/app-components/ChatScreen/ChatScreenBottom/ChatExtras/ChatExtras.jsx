@@ -1,13 +1,14 @@
 import React from 'react';
 import './ChatExtras.scss';
 import ImageChatExtra from './ImageChatExtra/ImageChatExtra';
+import VoiceChatExtra from './VoiceChatExtra/VoiceChatExtra';
 
 export default function ChatExtras() {
     return (
         <div className="ChatExtras">
-            <i className="material-icons">mic</i>
+            <VoiceChatExtra />
             <ImageChatExtra />
-            <i className="material-icons">more_vert</i>
+            <i className="chatExtra__icon material-icons">more_vert</i>
         </div>
     )
 }

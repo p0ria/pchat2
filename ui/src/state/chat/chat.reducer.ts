@@ -30,7 +30,7 @@ export const chatReducer = (
                 return state;
             }
 
-        case ChatActionTypes.ActivateChatDrawer:
+        case ChatActionTypes.ActivateChatDrawerSuccess:
             return {
                 ...state,
                 activeDrawer: {

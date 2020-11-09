@@ -4,7 +4,7 @@ import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 import { AUDIENCE_QUERY } from "../../graphql/queries";
 import { Action } from "../../interfaces/store.interface";
 import { selectToken } from "../login/login.selectors";
-import { actionRemoveChatDrawer, actionRemoveChatDrawerSuccess, actionSelectAudienceSuccess, actionSubmitChatDrawerFail, actionSubmitChatDrawerSuccess, ChatActionTypes } from "./chat.actions";
+import { actionActivateChatDrawerSuccess, actionRemoveChatDrawer, actionRemoveChatDrawerSuccess, actionSelectAudienceSuccess, actionSubmitChatDrawerFail, actionSubmitChatDrawerSuccess, ChatActionTypes } from "./chat.actions";
 import { selectActiveDrawer, selectSelectedAudience } from "./chat.selectors";
 
 export function* sendMessageSaga(action: Action) {
@@ -31,6 +31,19 @@ export function* getAudienceSaga(action: Action) {
         yield put(actionSelectAudienceSuccess(audience));
     } catch (error) {
         console.log(error);
+    }
+}
+
+export function* activateChatDrawerSaga(action: Action) {
+    try {
+        const activeDrawer = yield select(selectActiveDrawer);
+        if (activeDrawer && activeDrawer.drawer !== action.payload.drawerRef) {
+            yield put(actionRemoveChatDrawer());
+        }
+        yield put(
+            actionActivateChatDrawerSuccess(action.payload.drawerRef, action.payload.children))
+    } catch (error) {
+
     }
 }
 
@@ -63,6 +76,7 @@ export function* submitChatDrawerSaga(action: Action) {
 export const chatSagas = [
     takeEvery(ChatActionTypes.SendMessage, sendMessageSaga),
     takeEvery(ChatActionTypes.SelectAudience, getAudienceSaga),
+    takeEvery(ChatActionTypes.ActivateChatDrawer, activateChatDrawerSaga),
     takeEvery(ChatActionTypes.RemoveChatDrawer, removeChatDrawerSaga),
     takeEvery(ChatActionTypes.SubmitChatDrawer, submitChatDrawerSaga)
 ];

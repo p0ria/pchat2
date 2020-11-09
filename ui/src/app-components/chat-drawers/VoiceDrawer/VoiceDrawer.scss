@@ -1,0 +1,62 @@
+@import '../../../styles/sizes';
+
+.VoiceDrawer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+
+    .VoiceDrawer__close {
+        flex: 0 0 30px;
+        height: 30px;
+        font-size: 1.2rem;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        &:hover {
+            color: rgba(var(--color-primary-dark), $alpha: 1.0);
+            cursor: pointer;
+        }
+    }
+
+    .VoiceDrawer__content {
+        width: 190px;
+        height: 30px;
+        padding: 5px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(0, 0, 0, .3);
+        border-radius: $radius;
+    
+        .VoiceDrawer__indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: onoff 600ms infinite;
+            &.stop {
+                animation-play-state: paused;
+                background-color: rgba(255, 0, 0, 1) !important; 
+            }
+        }
+    
+        .VoiceDrawer__duration {
+            font-family: 'Digital-7 Mono', sans-serif;
+            margin-left: 30px;
+            letter-spacing: 3px;
+            flex: 1;
+            text-align: center;
+        }
+    }
+}
+
+
+@keyframes onoff {
+    from {
+        background-color: rgba(255, 0, 0, .4);
+    }
+    to {
+        background-color: rgba(255, 0, 0, 1); 
+    }
+}

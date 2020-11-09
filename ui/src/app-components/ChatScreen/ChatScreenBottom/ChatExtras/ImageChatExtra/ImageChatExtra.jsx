@@ -45,9 +45,7 @@ export default function ImageChatExtra() {
 
     useEffect(() => {
         if (urls && urls.length > 0) {
-            dispatch(actionActivateChatDrawer(ref, <ImageDrawer imageUrls={urls} />))
-        } else {
-            dispatch(actionRemoveChatDrawer());
+            dispatch(actionActivateChatDrawer(ref, <ImageDrawer imageUrls={urls} />));
         }
     }, [urls])
 
@@ -60,7 +58,7 @@ export default function ImageChatExtra() {
         <div className="ImageChatExtra">
             <label
                 htmlFor="imageInputFile"
-                className="material-icons">
+                className="chatExtra__icon material-icons">
                 attach_file
             </label>
             <input

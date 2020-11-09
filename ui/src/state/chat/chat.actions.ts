@@ -4,6 +4,7 @@ export const ChatActionTypes = {
     SelectAudienceSuccess: '[CHAT] Select Audience Success',
     MessageAdded: '[CHAT] Message Added',
     ActivateChatDrawer: '[CHAT] Activate Chat Drawer',
+    ActivateChatDrawerSuccess: '[CHAT] Activate Chat Drawer Success',
     RemoveChatDrawer: '[CHAT] Remove Chat Drawer',
     RemoveChatDrawerSuccess: '[CHAT] Remove Chat Drawer Success',
     SubmitChatDrawer: '[CHAT] Submit Chat Drawer',
@@ -33,6 +34,11 @@ export const actionMessageAdded = message => ({
 
 export const actionActivateChatDrawer = (drawerRef, children) => ({
     type: ChatActionTypes.ActivateChatDrawer,
+    payload: { drawerRef, children }
+})
+
+export const actionActivateChatDrawerSuccess = (drawerRef, children) => ({
+    type: ChatActionTypes.ActivateChatDrawerSuccess,
     payload: { drawerRef, children }
 })
 
