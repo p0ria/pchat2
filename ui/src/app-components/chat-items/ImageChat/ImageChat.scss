@@ -4,6 +4,7 @@
     margin: -5px;
     display: flex;
     flex-flow: row-reverse wrap;
+    justify-content: space-between;
     &.left {
         flex-flow: row wrap;
     }

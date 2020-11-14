@@ -24,9 +24,9 @@ export default function VoiceDrawer({ stop }) {
     }, [stop])
 
     return (
-        <div className="VoiceDrawer">
+        <div className={`VoiceDrawer ${stop ? 'stop' : ''}`}>
             <div className="VoiceDrawer__content">
-                <i className={`VoiceDrawer__indicator ${stop ? 'stop' : ''}`}></i>
+                <i className="VoiceDrawer__indicator"></i>
                 <span className="VoiceDrawer__duration">{secondsToMinSecTimeFormat(duration)}</span>
             </div>
             {stop &&
