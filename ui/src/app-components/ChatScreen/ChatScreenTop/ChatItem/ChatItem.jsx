@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../state/app/app.selectors';
 import ImageChat from '../../../chat-items/ImageChat/ImageChat';
 import TextChat from '../../../chat-items/TextChat/TextChat';
+import VoiceChat from '../../../chat-items/VoiceChat/VoiceChat';
 import './ChatItem.scss';
 
 export default function ChatItem({ message }) {
@@ -15,6 +16,9 @@ export default function ChatItem({ message }) {
 
             case 'IMAGE':
                 return <ImageChat isOwner={isOwner} message={message.value} />
+
+            case 'VOICE':
+                return <VoiceChat isOwner={isOwner} message={message.value} />
 
             default:
                 return 'UNKNOWN MESSAGE TYPE';

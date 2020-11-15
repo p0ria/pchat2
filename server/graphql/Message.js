@@ -4,7 +4,7 @@ const { MessageController } = require("../controllers/message.controller");
 
 const typeDefs = gql`
   enum MessageType {
-    TEXT, FILE, IMAGE
+    TEXT, FILE, IMAGE, VOICE
   }
 
   type Message {

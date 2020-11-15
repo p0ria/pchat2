@@ -20,36 +20,3 @@ export const getAudioStream = () => {
         }
     })
 }
-
-export const streamToByteArray = stream => {
-    var recorder, source = new MediaSource()
-
-    var elem = createVideoElem()
-    elem.src = URL.createObjectURL(source)
-    source.addEventListener('sourceopen', sourceOpen)
-
-    function sourceOpen() {
-        var buffer = source.addSourceBuffer('video/webm;codecs=vp9')
-        recorder = new MediaRecorder(stream)
-        recorder.start(1000)
-
-        recorder.ondataavailable = function (e) {
-            var fileReader = new FileReader();
-            fileReader.onload = function () {
-                //buffer.appendBuffer(fileReader.result);
-                debugger;
-                console.log(fileReader);
-            };
-            fileReader.readAsArrayBuffer(e.data);
-        }
-    }
-}
-
-function createVideoElem() {
-    var elem = document.createElement('video')
-    elem.controls = true
-    elem.autoplay = true // for chrome
-    elem.play() // for firefox
-    document.body.appendChild(elem)
-    return elem
-}
