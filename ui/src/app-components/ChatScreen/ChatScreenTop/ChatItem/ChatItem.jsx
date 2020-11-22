@@ -9,6 +9,8 @@ import './ChatItem.scss';
 export default function ChatItem({ message }) {
     const user = useSelector(selectUser);
     const isOwner = String(user._id) === message.author._id;
+    const timestamp = new Date(0); // The 0 there is the key, which sets the date to the epoch
+    timestamp.setUTCSeconds(message.createdAt / 1000);
     const renderChatComponent = useCallback(() => {
         switch (message.type) {
             case 'TEXT':
@@ -32,6 +34,7 @@ export default function ChatItem({ message }) {
             }
             <div className="ChartItem__baloon">
                 {renderChatComponent()}
+                <div className="ChatItem__timestamp">{`${timestamp.toLocaleDateString()} ${timestamp.toTimeString().substr(0, 5)}`}</div>
             </div>
         </div>
     )
