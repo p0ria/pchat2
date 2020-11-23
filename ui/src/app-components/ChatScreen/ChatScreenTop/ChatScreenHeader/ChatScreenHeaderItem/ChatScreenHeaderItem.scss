@@ -1,0 +1,10 @@
+.ChatScreenHeaderItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+        font-size: 0.7rem;
+    }
+}

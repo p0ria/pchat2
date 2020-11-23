@@ -1,13 +1,16 @@
 import { call, getContext, put, select, takeEvery } from "redux-saga/effects";
+
 import { CHANGE_AVATAR_MUTATION } from "../../graphql/mutations";
 import { ME_QUERY } from "../../graphql/queries";
 import { Action } from "../../interfaces/store.interface";
+import { connectToWebrtcSocket } from "../../services/webrtc";
 import subscribeToWS from "../../services/ws";
 import { actionGetAllAudiences } from "../audience/audience.actions";
 import { selectToken } from "../login/login.selectors";
-import { actionChangeAvatarFail, actionChangeAvatarSuccess, actionGetProfile, actionGetProfileFail, actionGetProfileSuccess, actionSubscribeToWSFail, AppActionTypes } from "./app.actions";
+import { actionChangeAvatarFail, actionChangeAvatarSuccess, actionGetProfileFail, actionGetProfileSuccess, actionSubscribeToWebrtcWS, actionSubscribeToWebrtcWSFail, actionSubscribeToWSFail, AppActionTypes } from "./app.actions";
+import { selectUser } from "./app.selectors";
 
-export function* getProfileSaga(action: Action) {
+export function* getProfileSaga() {
     try {
         const token = yield select(selectToken);
         const client = yield getContext('client');
@@ -26,6 +29,17 @@ export function* subscribeToWSSaga(action: Action) {
         subscribeToWS(token, dispatch);
     } catch (error) {
         yield put(actionSubscribeToWSFail(error));
+    }
+}
+
+export function* subscribeToWebrtcWSSaga(action: Action) {
+    try {
+        const dispatch = action.payload;
+        debugger;
+        const user = yield select(selectUser);
+        connectToWebrtcSocket(user._id, dispatch);
+    } catch (error) {
+        yield put(actionSubscribeToWebrtcWSFail(error));
     }
 }
 
@@ -54,6 +68,7 @@ export function* changeAvatarSaga(action: Action) {
 
 export const appSagas = [
     takeEvery(AppActionTypes.SubscribeToWS, subscribeToWSSaga),
+    takeEvery(AppActionTypes.SubscribeToWebrtcWS, subscribeToWebrtcWSSaga),
     takeEvery(AppActionTypes.AppReconnected, appReconnectedSaga),
     takeEvery(AppActionTypes.ChangeAvatar, changeAvatarSaga),
     takeEvery(AppActionTypes.GetProfile, getProfileSaga)

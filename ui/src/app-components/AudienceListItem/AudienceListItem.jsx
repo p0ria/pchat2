@@ -18,9 +18,9 @@ const itemVariants = {
     }
 }
 
-export default function AudienceListItem({ name, avatarUrl, ...props }) {
+export default function AudienceListItem({ name, avatarUrl, active, ...props }) {
     return (
-        <motion.div className="AudienceListItem"
+        <motion.div className={`AudienceListItem ${active ? 'active' : ''}`}
             variants={itemVariants}
             {...props}
         >
