@@ -49,6 +49,7 @@ export const AUDIENEC_IMPL_QUERY = gql`
       __typename
       ... on Private {
         _id
+        type
         user1 {
           _id
         }
