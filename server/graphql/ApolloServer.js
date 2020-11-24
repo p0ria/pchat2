@@ -5,13 +5,15 @@ const [Subscription, SubscriptionResolver] = require('./Subscription');
 const [Audience, AudienceResolver] = require('./Audience');
 const [Message, MessageResolver] = require('./Message');
 const [User, UserResolver] = require('./User');
+const [AudienceImpl, AudienceImplResolver] = require('./AudienceImpl');
+const [Private, PrivateResolver] = require('./Private');
 
 const { ApolloServer, makeExecutableSchema } = require('apollo-server');
 const { UserController } = require('../controllers/user.controller');
 
 const schema = makeExecutableSchema({
-  typeDefs: [Query, Mutation, Subscription, Audience, Message, User],
-  resolvers: merge(QueryResolver, MutationResolver, SubscriptionResolver, AudienceResolver, MessageResolver, UserResolver)
+  typeDefs: [Query, Mutation, Subscription, Audience, Message, User, AudienceImpl, Private],
+  resolvers: merge(QueryResolver, MutationResolver, SubscriptionResolver, AudienceResolver, MessageResolver, UserResolver, AudienceImplResolver, PrivateResolver)
 });
 
 const server = new ApolloServer({

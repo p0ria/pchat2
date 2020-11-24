@@ -19,8 +19,9 @@ export class WSGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.logger.log(`Client ${client.id} disconnected from Webscoket.`);
     }
 
-    @SubscribeMessage('message')
+    @SubscribeMessage('webrtc')
     onCall(client: Socket, { calleeId, payload }) {
+        console.log(`on webrtc with calleeId: ${calleeId}, payload: ${payload.type}`)
         this.server.sockets.in(calleeId).emit('message', payload);
     }
 

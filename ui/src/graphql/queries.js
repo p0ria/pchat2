@@ -42,3 +42,20 @@ export const AUDIENCE_QUERY = gql`
     }
   }
 `
+
+export const AUDIENEC_IMPL_QUERY = gql`
+  query($audienceId: ID!) {
+    audienceImpl(id: $audienceId) {
+      __typename
+      ... on Private {
+        _id
+        user1 {
+          _id
+        }
+        user2 {
+          _id
+        }
+      }
+    }
+  }
+`

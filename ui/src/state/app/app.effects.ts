@@ -35,7 +35,6 @@ export function* subscribeToWSSaga(action: Action) {
 export function* subscribeToWebrtcWSSaga(action: Action) {
     try {
         const dispatch = action.payload;
-        debugger;
         const user = yield select(selectUser);
         connectToWebrtcSocket(user._id, dispatch);
     } catch (error) {
