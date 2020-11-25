@@ -22,7 +22,7 @@ export class WSGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @SubscribeMessage('webrtc')
     onCall(client: Socket, { calleeId, payload }) {
         console.log(`on webrtc with calleeId: ${calleeId}, payload: ${payload.type}`)
-        this.server.sockets.in(calleeId).emit('message', payload);
+        this.server.to(calleeId).emit('message', payload);
     }
 
 }
