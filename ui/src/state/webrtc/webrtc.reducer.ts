@@ -20,6 +20,12 @@ export const webrtcReducer = (
                 localConnection: action.payload.localConnection
             }
 
+        case WebrtcActionTypes.OnRemoteStreamAdded:
+            return {
+                ...state,
+                remoteStream: action.payload
+            }
+
         default:
             return state;
     }

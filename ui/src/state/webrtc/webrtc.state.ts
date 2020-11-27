@@ -4,12 +4,14 @@ interface WebrtcState {
     callee: Audience | null
     localStream: MediaStream | null
     localConnection: RTCPeerConnection | null
+    remoteStream?: MediaStream
 }
 
 export const initialWebrtcState: WebrtcState = {
     callee: null,
     localStream: null,
-    localConnection: null
+    localConnection: null,
+    remoteStream: null
 }
 
 export default WebrtcState;

@@ -1,30 +1,22 @@
+import { selectLocalStream, selectLocalConnection } from './webrtc.selectors';
+import { WebrtcMessageTypes } from './../../interfaces/webrtc.interface';
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import { Action } from "../../interfaces/store.interface";
 import { sendToWebrtcSocket } from "../../services/webrtc";
 import { getPeerConnection, getUserMedia } from "../../Utils/media-utils";
 import { selectUser } from "../app/app.selectors";
-import { selectSelectedAudience, selectSelectedAudienceImpl } from "../chat/chat.selectors";
-import { actionCallAudienceFail, actionCallAudienceSuccess, actionSendWebrtcMessage, WebrtcActionTypes } from "./webrtc.actions";
+import { selectSelectedAudienceImpl } from "../chat/chat.selectors";
+import { actionCallAudienceFail, actionCallAudienceSuccess, actionOnRemoteStreamAdded, actionSendWebrtcMessage, WebrtcActionTypes } from "./webrtc.actions";
 
 export function* callAudienceSaga(action: Action) {
     try {
         const dispatch = action.payload;
-        const localStream = yield call(getUserMedia, { audio: false, video: true });
-        const localConnection = getPeerConnection();
-        localConnection.onicecandidate = ({ candidate }) => {
-            dispatch(actionSendWebrtcMessage({
-                type: 'candidate',
-                payload: candidate
-            }))
-        };
-        localStream.getTracks().forEach(track => {
-            localConnection.addTrack(track, localStream);
-        });
+        const { localStream, localConnection } = yield call(createRtcPeerConnection, dispatch);
         (<any>localConnection).createOffer(
             desc => {
-                localConnection.setLocalDescription(desc);
+                localConnection.setLocalDescription(desc); localConnection.createAnswer()
                 dispatch(actionSendWebrtcMessage({
-                    type: 'offer',
+                    type: WebrtcMessageTypes.offer,
                     payload: desc
                 }));
                 dispatch(actionCallAudienceSuccess(localStream, localConnection));
@@ -56,7 +48,65 @@ export function* sendWebrtcMessageSaga(action: Action) {
     }
 }
 
+export function* onCandidateMessageSaga(action: Action) {
+    const dispatch = action.payload.dispatch;
+    let localConnection = yield select(selectLocalConnection);
+    if (localConnection == null) {
+        const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
+        localConnection = rtcPeerConnection.localConnection;
+        dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+    }
+    localConnection.addIceCandidate(action.payload);
+}
+
+export function* onOfferMessageSaga(action: Action) {
+    const dispatch = action.payload.dispatch;
+    let localConnection = yield select(selectLocalConnection);
+    if (localConnection == null) {
+        const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
+        localConnection = rtcPeerConnection.localConnection;
+        dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+    }
+    const answer = yield call(localConnection.createAnswer);
+    dispatch(actionSendWebrtcMessage({
+        type: WebrtcMessageTypes.answer,
+        payload: answer
+    }))
+}
+
+export function* onAnswerMessageSaga(action: Action) {
+    const dispatch = action.payload.dispatch;
+    let localConnection = yield select(selectLocalConnection);
+    if (localConnection == null) {
+        const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
+        localConnection = rtcPeerConnection.localConnection;
+        dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+    }
+    localConnection.setRemoteDescription(action.payload.answer);
+}
+
 export const webrtcSagas = [
     takeEvery(WebrtcActionTypes.CallAudience, callAudienceSaga),
-    takeEvery(WebrtcActionTypes.SendWebrtcMessage, sendWebrtcMessageSaga)
+    takeEvery(WebrtcActionTypes.SendWebrtcMessage, sendWebrtcMessageSaga),
+    takeEvery(WebrtcActionTypes.OnCandidateMessage, onCandidateMessageSaga),
+    takeEvery(WebrtcActionTypes.OnOfferMessage, onOfferMessageSaga),
+    takeEvery(WebrtcActionTypes.OnAnswerMessage, onAnswerMessageSaga)
 ];
+
+async function createRtcPeerConnection(dispatch) {
+    const localStream = await getUserMedia({ audio: true, video: true });
+    const localConnection = getPeerConnection();
+    localConnection.onicecandidate = ({ candidate }) => {
+        dispatch(actionSendWebrtcMessage({
+            type: WebrtcMessageTypes.candidate,
+            payload: candidate
+        }))
+    };
+    localConnection.ontrack = event => {
+        dispatch(actionOnRemoteStreamAdded(event.streams[0]));
+    }
+    localStream.getTracks().forEach(track => {
+        localConnection.addTrack(track, localStream);
+    });
+    return { localStream, localConnection };
+}

@@ -1,5 +1,8 @@
+import { actionOnOfferMessage, actionOnAnswerMessage } from './../state/webrtc/webrtc.actions';
+import { WebrtcMessageTypes } from './../interfaces/webrtc.interface';
 import io from "socket.io-client";
 import { actionSubscribeToWebrtcWSFail, actionSubscribeToWebrtcWSSuccess } from "../state/app/app.actions";
+import { actionOnCandidateMessage, WebrtcActionTypes } from '../state/webrtc/webrtc.actions';
 
 var socket: SocketIOClient.Socket;
 export const connectToWebrtcSocket = (userId, dispatch) => {
@@ -20,8 +23,21 @@ export const connectToWebrtcSocket = (userId, dispatch) => {
         dispatch(actionSubscribeToWebrtcWSFail('Disconnected from webrtc socket'))
         console.log('disconnected from webrtc socket');
     })
-    socket.on('message', payload => {
-        console.log(`message arrived from webrtc socket`, payload);
+    socket.on('message', (message: { type: string, payload: any }) => {
+        console.log(`message arrived from webrtc socket`, message);
+        switch (message.type) {
+            case WebrtcMessageTypes.candidate:
+                dispatch(actionOnCandidateMessage(message.type, dispatch));
+                break;
+
+            case WebrtcMessageTypes.offer:
+                dispatch(actionOnOfferMessage(message.payload, dispatch));
+                break;
+
+            case WebrtcMessageTypes.answer:
+                dispatch(actionOnAnswerMessage(message.payload, dispatch));
+                break;
+        }
     })
 }
 
