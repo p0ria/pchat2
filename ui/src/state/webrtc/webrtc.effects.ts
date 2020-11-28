@@ -27,6 +27,7 @@ export function* callAudienceSaga(action: Action) {
             }
         )
     } catch (error) {
+        console.log(error);
         yield put(actionCallAudienceFail(error));
     }
 }
@@ -49,40 +50,55 @@ export function* sendWebrtcMessageSaga(action: Action) {
 }
 
 export function* onCandidateMessageSaga(action: Action) {
-    const dispatch = action.payload.dispatch;
-    let localConnection = yield select(selectLocalConnection);
-    if (localConnection == null) {
-        const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
-        localConnection = rtcPeerConnection.localConnection;
-        dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+    try {
+        const dispatch = action.payload.dispatch;
+        let localConnection = yield select(selectLocalConnection);
+        if (localConnection == null) {
+            const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
+            localConnection = rtcPeerConnection.localConnection;
+            dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+        }
+        if (action.payload.candidate) {
+
+            localConnection.addIceCandidate(action.payload.candidate);
+        }
+    } catch (error) {
+
     }
-    localConnection.addIceCandidate(action.payload);
 }
 
 export function* onOfferMessageSaga(action: Action) {
-    const dispatch = action.payload.dispatch;
-    let localConnection = yield select(selectLocalConnection);
-    if (localConnection == null) {
-        const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
-        localConnection = rtcPeerConnection.localConnection;
-        dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+    try {
+        const dispatch = action.payload.dispatch;
+        let localConnection = yield select(selectLocalConnection);
+        if (localConnection == null) {
+            const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
+            localConnection = rtcPeerConnection.localConnection;
+            dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+        }
+        const answer = yield call(localConnection.createAnswer);
+        dispatch(actionSendWebrtcMessage({
+            type: WebrtcMessageTypes.answer,
+            payload: answer
+        }))
+    } catch (error) {
+
     }
-    const answer = yield call(localConnection.createAnswer);
-    dispatch(actionSendWebrtcMessage({
-        type: WebrtcMessageTypes.answer,
-        payload: answer
-    }))
 }
 
 export function* onAnswerMessageSaga(action: Action) {
-    const dispatch = action.payload.dispatch;
-    let localConnection = yield select(selectLocalConnection);
-    if (localConnection == null) {
-        const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
-        localConnection = rtcPeerConnection.localConnection;
-        dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+    try {
+        const dispatch = action.payload.dispatch;
+        let localConnection = yield select(selectLocalConnection);
+        if (localConnection == null) {
+            const rtcPeerConnection = yield call(createRtcPeerConnection, dispatch);
+            localConnection = rtcPeerConnection.localConnection;
+            dispatch(actionCallAudienceSuccess(rtcPeerConnection.localStream, localConnection));
+        }
+        localConnection.setRemoteDescription(action.payload.answer);
+    } catch (error) {
+
     }
-    localConnection.setRemoteDescription(action.payload.answer);
 }
 
 export const webrtcSagas = [
@@ -93,8 +109,8 @@ export const webrtcSagas = [
     takeEvery(WebrtcActionTypes.OnAnswerMessage, onAnswerMessageSaga)
 ];
 
-async function createRtcPeerConnection(dispatch) {
-    const localStream = await getUserMedia({ audio: true, video: true });
+async function createRtcPeerConnection(dispatch, options = { audio: false, video: true }) {
+    const localStream = await getUserMedia(options);
     const localConnection = getPeerConnection();
     localConnection.onicecandidate = ({ candidate }) => {
         dispatch(actionSendWebrtcMessage({

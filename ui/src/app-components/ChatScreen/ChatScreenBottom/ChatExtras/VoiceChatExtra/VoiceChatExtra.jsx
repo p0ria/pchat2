@@ -65,6 +65,7 @@ export default function VoiceChatExtra() {
     const saveRecording = () => {
         if (recorderRef.current) {
             recorderRef.current.stop();
+            recorderRef.current.stream.getTracks().forEach(track => track.stop());
         }
     }
 

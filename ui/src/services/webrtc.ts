@@ -27,7 +27,7 @@ export const connectToWebrtcSocket = (userId, dispatch) => {
         console.log(`message arrived from webrtc socket`, message);
         switch (message.type) {
             case WebrtcMessageTypes.candidate:
-                dispatch(actionOnCandidateMessage(message.type, dispatch));
+                dispatch(actionOnCandidateMessage(message.payload, dispatch));
                 break;
 
             case WebrtcMessageTypes.offer:
