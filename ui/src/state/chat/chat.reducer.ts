@@ -11,7 +11,13 @@ export const chatReducer = (
             return {
                 ...state,
                 selectedAudience: action.payload
-            };
+            }
+
+        case ChatActionTypes.GetSelectedAudienceImplSuccess:
+            return {
+                ...state,
+                selectedAudienceImpl: action.payload
+            }
 
         case ChatActionTypes.MessageAdded:
             if (state.selectedAudience &&

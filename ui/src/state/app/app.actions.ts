@@ -6,6 +6,9 @@ export const AppActionTypes = {
     GetProfileFail: '[APP] Get Profile Fail',
     SubscribeToWS: '[APP] Subscribe To WS',
     SubscribeToWSFail: '[APP] Subscribe To WS Fail',
+    SubscribeToWebrtcWS: '[APP] Subscribe to Webrtc WS',
+    SubscribeToWebrtcWSSuccess: '[APP] Subscribe to Webrtc WS Success',
+    SubscribeToWebrtcWSFail: '[APP] Subscribe to Webrtc WS Fail',
     AppReconnected: '[APP] App Reconnected',
     ChangeAvatar: '[APP] Change Avatar',
     ChangeAvatarSuccess: '[APP] Change Avatar Success',
@@ -33,6 +36,20 @@ export const actionSubscribeToWS = dispatch => ({
 
 export const actionSubscribeToWSFail = error => ({
     type: AppActionTypes.SubscribeToWSFail,
+    payload: error
+})
+
+export const actionSubscribeToWebrtcWS = dispatch => ({
+    type: AppActionTypes.SubscribeToWebrtcWS,
+    payload: dispatch
+})
+
+export const actionSubscribeToWebrtcWSSuccess = () => ({
+    type: AppActionTypes.SubscribeToWebrtcWSSuccess
+})
+
+export const actionSubscribeToWebrtcWSFail = error => ({
+    type: AppActionTypes.SubscribeToWebrtcWSFail,
     payload: error
 })
 

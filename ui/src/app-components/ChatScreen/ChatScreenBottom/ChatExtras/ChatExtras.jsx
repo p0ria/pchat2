@@ -1,6 +1,7 @@
 import React from 'react';
 import './ChatExtras.scss';
 import ImageChatExtra from './ImageChatExtra/ImageChatExtra';
+import MoreChatExtra from './MoreChatExtra/MoreChatExtra';
 import VoiceChatExtra from './VoiceChatExtra/VoiceChatExtra';
 
 export default function ChatExtras() {
@@ -8,7 +9,7 @@ export default function ChatExtras() {
         <div className="ChatExtras">
             <VoiceChatExtra />
             <ImageChatExtra />
-            <i className="chatExtra__icon material-icons">more_vert</i>
+            <MoreChatExtra />
         </div>
     )
 }

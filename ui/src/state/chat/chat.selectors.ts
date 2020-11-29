@@ -8,6 +8,11 @@ export const selectSelectedAudience = createSelector(
     state => state.selectedAudience
 )
 
+export const selectSelectedAudienceImpl = createSelector(
+    selectChatState,
+    state => state.selectedAudienceImpl
+)
+
 export const selectSelectedAudienceMessages = createSelector(
     selectSelectedAudience,
     audience => (audience && audience.messages) || []

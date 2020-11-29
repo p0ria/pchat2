@@ -3,20 +3,26 @@
     padding: 10px 20px;
     align-items: center;
     cursor: pointer;
+    user-select: none;
 
     .AudienceListItem-Avatar {
         width: 36px;
         height: 36px;
         background-size: contain;
         border-radius: 50%;
-        background-image: radial-gradient(rgba(#fff, .8) 40%, transparent);
-    };
+        background-image: radial-gradient(rgba(#fff, 0.8) 40%, transparent);
+    }
 
     .AudienceListItem-Title {
         flex: 1;
         margin-left: 15px;
-        color: rgba(var(--color-text-light), .9);
-        font-size: .9rem;
+        color: rgba(var(--color-text-light), 0.9);
+        font-size: 0.9rem;
+    }
+
+    &.active {
+        .AudienceListItem-Title {
+            color: rgba(var(--color-secondary-dark), $alpha: 1);
+        }
     }
 }
-  

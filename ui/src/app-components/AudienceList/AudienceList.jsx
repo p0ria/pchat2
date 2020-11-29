@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import AudienceListItem from "../AudienceListItem/AudienceListItem";
 import "./AudienceList.scss";
 import { actionSelectAudience } from "../../state/chat/chat.actions";
+import { selectSelectedAudience } from "../../state/chat/chat.selectors";
 
 const listVariants = {
     initial: {
@@ -21,6 +22,7 @@ const listVariants = {
 
 export default function AudienceList(props) {
     const audiences = useSelector(selectAudiences);
+    const selectedAudience = useSelector(selectSelectedAudience);
     const dispatch = useDispatch();
     const handleSelectAudience = audienceId => {
         dispatch(actionSelectAudience(audienceId));
@@ -37,6 +39,7 @@ export default function AudienceList(props) {
                 name={audience.name}
                 avatarUrl={audience.avatarUrl}
                 onClick={() => handleSelectAudience(audience._id)}
+                active={selectedAudience && selectedAudience._id == audience._id}
             />)
         }
     </motion.div>)

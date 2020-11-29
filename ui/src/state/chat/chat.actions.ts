@@ -2,6 +2,9 @@ export const ChatActionTypes = {
     SendMessage: '[CHAT] Send Message',
     SelectAudience: '[CHAT] Select Audience',
     SelectAudienceSuccess: '[CHAT] Select Audience Success',
+    GetSelectedAudienceImpl: '[CHAT] Get Selected Audience Impl',
+    GetSelectedAudienceImplSuccess: '[CHAT] Get Selected Audience Impl Success',
+    GetSelectedAudienceImplFail: '[CHAT] Get Selected Audience Impl Fail',
     MessageAdded: '[CHAT] Message Added',
     ActivateChatDrawer: '[CHAT] Activate Chat Drawer',
     ActivateChatDrawerSuccess: '[CHAT] Activate Chat Drawer Success',
@@ -25,6 +28,20 @@ export const actionSelectAudience = audienceId => ({
 export const actionSelectAudienceSuccess = audience => ({
     type: ChatActionTypes.SelectAudienceSuccess,
     payload: audience
+})
+
+export const actionGetSelectedAudienceImpl = () => ({
+    type: ChatActionTypes.GetSelectedAudienceImpl
+})
+
+export const actionGetSelectedAudienceImplSuccess = audienceImpl => ({
+    type: ChatActionTypes.GetSelectedAudienceImplSuccess,
+    payload: audienceImpl
+})
+
+export const actionGetSelectedAudienceImplFail = error => ({
+    type: ChatActionTypes.GetSelectedAudienceImplFail,
+    payload: error
 })
 
 export const actionMessageAdded = message => ({

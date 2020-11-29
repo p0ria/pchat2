@@ -17,7 +17,7 @@ export default function ChatItems() {
         }
     }, [messages])
     return (
-        <Scrollbars autoHide ref={ref}>
+        <Scrollbars autoHide ref={ref} style={{ height: 'calc(100% - 50px)' }}>
             <div className="ChatItems">
                 {
                     messages.map(message => (

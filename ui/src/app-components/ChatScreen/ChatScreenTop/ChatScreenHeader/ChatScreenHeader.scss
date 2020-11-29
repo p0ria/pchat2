@@ -1,0 +1,16 @@
+@import "../../../../styles/sizes";
+
+.ChatScreenHeader {
+    height: $chat-header-hight;
+    background-color: #efefef;
+    padding: 0 30px;
+    display: flex;
+    user-select: none;
+
+    .ChatScreenHeader__items {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
