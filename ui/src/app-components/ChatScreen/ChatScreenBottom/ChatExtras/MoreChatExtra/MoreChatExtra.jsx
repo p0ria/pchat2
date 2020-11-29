@@ -1,7 +1,6 @@
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { actionActivateChatDrawer } from '../../../../../state/chat/chat.actions';
-import LocationMap from '../../../../../components/LocationMap/LocationMap';
+import { actionActivateChatDrawer, actionSendMessage } from '../../../../../state/chat/chat.actions';
 import './MoreChatExtra.scss';
 import LocationDrawer from '../../../../chat-drawers/LocationDrawer/LocationDrawer';
 
@@ -16,8 +15,15 @@ export default function MoreChatExtra() {
     }
 
     const submit = async audienceId => {
-        if (audienceId) {
-            console.log(location.current);
+        if (audienceId && location.current && location.current.length > 0) {
+            const payload = {
+                type: 'LOCATION',
+                value: {
+                    lng: location.current[0],
+                    lat: location.current[1]
+                }
+            }
+            dispatch(actionSendMessage(audienceId, payload.type, payload.value));
         }
     }
 
@@ -26,14 +32,16 @@ export default function MoreChatExtra() {
         submit
     }))
 
-    const handleSendLocation = () => {
+    const handleShowLocation = () => {
         setIsOpen(false);
         navigator.geolocation.getCurrentPosition(position => {
             location.current = [position.coords.longitude, position.coords.latitude];
             dispatch(actionActivateChatDrawer(ref,
                 <LocationDrawer
-                    longitude={position.coords.longitude}
-                    latitude={position.coords.latitude} />))
+                    lngLat={location.current}
+                    isEditable={true}
+                    onMapClicked={lngLat => location.current = lngLat}
+                />))
         }, error => console.log(error), { enableHighAccuracy: true });
     }
 
@@ -46,7 +54,7 @@ export default function MoreChatExtra() {
             </i>
             <div className={`MoreChatExtra__popup ${isOpen ? 'is-open' : ''}`}>
                 <i className="material-icons location-icon"
-                    onClick={handleSendLocation}
+                    onClick={handleShowLocation}
                 >
                     location_on
                     </i>

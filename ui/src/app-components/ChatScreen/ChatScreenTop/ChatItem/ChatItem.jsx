@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../state/app/app.selectors';
 import ImageChat from '../../../chat-items/ImageChat/ImageChat';
+import MapChat from '../../../chat-items/MapChat/MapChat';
 import TextChat from '../../../chat-items/TextChat/TextChat';
 import VoiceChat from '../../../chat-items/VoiceChat/VoiceChat';
 import './ChatItem.scss';
@@ -21,6 +22,9 @@ export default function ChatItem({ message }) {
 
             case 'VOICE':
                 return <VoiceChat isOwner={isOwner} message={message.value} />
+
+            case 'LOCATION':
+                return <MapChat isOwner={isOwner} message={message.value} />
 
             default:
                 return 'UNKNOWN MESSAGE TYPE';
